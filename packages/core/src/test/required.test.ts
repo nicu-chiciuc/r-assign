@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import {
   isObjectOf,
   isOptional,
@@ -12,93 +11,113 @@ import {
 } from '../lib';
 
 test('isRequired', () => {
-  equal(isRequired, required);
+  expect(isRequired).toEqual(required);
 
-  ok(isRequired(isObjectOf({ a: isOptional(isString) }))({ a: 'abc' }));
-  notOk(isRequired(isObjectOf({ a: isOptional(isString) }))({ a: undefined }));
-  notOk(isRequired(isObjectOf({ a: isOptional(isString) }))({}));
+  expect(
+    isRequired(isObjectOf({ a: isOptional(isString) }))({ a: 'abc' })
+  ).toBeTruthy();
+  expect(
+    isRequired(isObjectOf({ a: isOptional(isString) }))({ a: undefined })
+  ).toBeFalsy();
+  expect(isRequired(isObjectOf({ a: isOptional(isString) }))({})).toBeFalsy();
 
-  ok(
+  expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({
       a: 'abc',
     })
-  );
-  ok(
+  ).toBeTruthy();
+  expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({
       a: 'abc',
       b: 'def',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({
       a: undefined,
     })
-  );
-  notOk(
+  ).toBeFalsy();
+  expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))(
       {}
     )
-  );
+  ).toBeFalsy();
 
-  ok(
+  expect(
     isRequired(isObjectOf({ a: isOptionalUndefined(isString) }))({
       a: 'abc',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isRequired(isObjectOf({ a: isOptionalUndefined(isString) }))({
       a: undefined,
     })
-  );
-  notOk(isRequired(isObjectOf({ a: isString }))({}));
+  ).toBeFalsy();
+  expect(isRequired(isObjectOf({ a: isString }))({})).toBeFalsy();
 
-  ok(isRequired(isObjectOf({ a: isString }))({ a: 'abc' }));
-  notOk(isRequired(isObjectOf({ a: isString }))({ a: undefined }));
-  notOk(isRequired(isObjectOf({ a: isString }))({}));
+  expect(isRequired(isObjectOf({ a: isString }))({ a: 'abc' })).toBeTruthy();
+  expect(isRequired(isObjectOf({ a: isString }))({ a: undefined })).toBeFalsy();
+  expect(isRequired(isObjectOf({ a: isString }))({})).toBeFalsy();
 
-  ok(isRequired(isStrictObjectOf({ a: isOptional(isString) }))({ a: 'abc' }));
-  notOk(
+  expect(
+    isRequired(isStrictObjectOf({ a: isOptional(isString) }))({ a: 'abc' })
+  ).toBeTruthy();
+  expect(
     isRequired(isStrictObjectOf({ a: isOptional(isString) }))({
       a: undefined,
     })
-  );
-  notOk(isRequired(isStrictObjectOf({ a: isOptional(isString) }))({}));
+  ).toBeFalsy();
+  expect(
+    isRequired(isStrictObjectOf({ a: isOptional(isString) }))({})
+  ).toBeFalsy();
 
-  ok(
+  expect(
     isRequired(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({
       a: 'abc',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isRequired(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({
       a: undefined,
     })
-  );
-  notOk(isRequired(isStrictObjectOf({ a: isString }))({}));
+  ).toBeFalsy();
+  expect(isRequired(isStrictObjectOf({ a: isString }))({})).toBeFalsy();
 
-  ok(isRequired(isStrictObjectOf({ a: isString }))({ a: 'abc' }));
-  notOk(isRequired(isStrictObjectOf({ a: isString }))({ a: undefined }));
-  notOk(isRequired(isStrictObjectOf({ a: isString }))({}));
+  expect(
+    isRequired(isStrictObjectOf({ a: isString }))({ a: 'abc' })
+  ).toBeTruthy();
+  expect(
+    isRequired(isStrictObjectOf({ a: isString }))({ a: undefined })
+  ).toBeFalsy();
+  expect(isRequired(isStrictObjectOf({ a: isString }))({})).toBeFalsy();
 
-  ok(isRequired(isTupleOf([isOptional(isString)]))(['abc']));
-  notOk(isRequired(isTupleOf([isOptional(isString)]))([undefined]));
-  notOk(isRequired(isTupleOf([isOptional(isString)]))([]));
+  expect(isRequired(isTupleOf([isOptional(isString)]))(['abc'])).toBeTruthy();
+  expect(
+    isRequired(isTupleOf([isOptional(isString)]))([undefined])
+  ).toBeFalsy();
+  expect(isRequired(isTupleOf([isOptional(isString)]))([])).toBeFalsy();
 
-  ok(isRequired(isTupleOf([isOptionalUndefined(isString)]))(['abc']));
-  notOk(isRequired(isTupleOf([isOptionalUndefined(isString)]))([undefined]));
-  notOk(isRequired(isTupleOf([isOptionalUndefined(isString)]))([]));
+  expect(
+    isRequired(isTupleOf([isOptionalUndefined(isString)]))(['abc'])
+  ).toBeTruthy();
+  expect(
+    isRequired(isTupleOf([isOptionalUndefined(isString)]))([undefined])
+  ).toBeFalsy();
+  expect(
+    isRequired(isTupleOf([isOptionalUndefined(isString)]))([])
+  ).toBeFalsy();
 
-  ok(isRequired(isTupleOf([isString]))(['abc']));
-  notOk(isRequired(isTupleOf([isString]))([undefined]));
-  notOk(isRequired(isTupleOf([isString]))([]));
+  expect(isRequired(isTupleOf([isString]))(['abc'])).toBeTruthy();
+  expect(isRequired(isTupleOf([isString]))([undefined])).toBeFalsy();
+  expect(isRequired(isTupleOf([isString]))([])).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isRequired();
-  }, TypeError);
+  }).toThrow(TypeError);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isRequired(isString);
-  }, TypeError);
+  }).toThrow(TypeError);
 });

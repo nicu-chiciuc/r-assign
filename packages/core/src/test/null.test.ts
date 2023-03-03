@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import {
   getNull,
   getNullable,
@@ -20,86 +19,86 @@ const invalidValue = 'Invalid value type';
 const received = 'but received undefined';
 
 test('getNull', () => {
-  equal(getNull(), null);
+  expect(getNull()).toEqual(null);
 });
 
 test('getNullable', () => {
   const getNullableString = getNullable(isString);
 
-  equal(getNullableString(), null);
-  equal(getNullableString(''), '');
-  equal(getNullableString('data'), 'data');
-  equal(getNullableString(null), null);
+  expect(getNullableString()).toEqual(null);
+  expect(getNullableString('')).toEqual('');
+  expect(getNullableString('data')).toEqual('data');
+  expect(getNullableString(null)).toEqual(null);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Throws - Expect throw
     getNullable();
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 });
 
 test('isNull', () => {
-  equal(isNull, nulled);
+  expect(isNull).toEqual(nulled);
 
-  ok(isNull(null));
-  notOk(isNull());
+  expect(isNull(null)).toBeTruthy();
+  expect(isNull()).toBeFalsy();
 });
 
 test('isNullable', () => {
   const isNullableString = isNullable(isString);
 
-  equal(isNullable, nullable);
+  expect(isNullable).toEqual(nullable);
 
-  ok(isNullableString(null));
-  ok(isNullableString(''));
-  notOk(isNullableString());
+  expect(isNullableString(null)).toBeTruthy();
+  expect(isNullableString('')).toBeTruthy();
+  expect(isNullableString()).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Throws
     isNullable();
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Throws
     isNullable(isOptional(isString));
-  }, TypeError('Optional type cannot be used in union declaration'));
+  }).toThrow(TypeError('Optional type cannot be used in union declaration'));
 });
 
 test('isNullish', () => {
   const isNullishString = isNullish(isString);
 
-  equal(isNullish, nullish);
+  expect(isNullish).toEqual(nullish);
 
-  ok(isNullishString(null));
-  ok(isNullishString());
-  ok(isNullishString(''));
-  notOk(isNullishString(true));
+  expect(isNullishString(null)).toBeTruthy();
+  expect(isNullishString()).toBeTruthy();
+  expect(isNullishString('')).toBeTruthy();
+  expect(isNullishString(true)).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Throws
     isNullish();
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Throws
     isNullish(isOptional(isString));
-  }, TypeError('Optional type cannot be used in union declaration'));
+  }).toThrow(TypeError('Optional type cannot be used in union declaration'));
 });
 
 test('parseNull', () => {
-  equal(parseNull(null), null);
+  expect(parseNull(null)).toEqual(null);
 
-  throws(() => {
+  expect(() => {
     parseNull();
-  }, TypeError(`${invalidValue}, ${expectedNull} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expectedNull} ${received}`));
 });
 
 test('parseNullable', () => {
   const parseNullableString = parseNullable(isString);
 
-  equal(parseNullableString(null), null);
-  equal(parseNullableString(''), '');
+  expect(parseNullableString(null)).toEqual(null);
+  expect(parseNullableString('')).toEqual('');
 
-  throws(() => {
+  expect(() => {
     parseNullableString();
-  }, TypeError(`${invalidValue}, ${expectedNullable} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expectedNullable} ${received}`));
 });

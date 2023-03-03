@@ -1,9 +1,8 @@
-import { test, equal, notOk } from 'tap';
 import { isNever, never } from '../lib/never';
 
 test('isNever', () => {
-  equal(isNever, never);
+  expect(isNever).toEqual(never);
 
-  notOk(isNever());
-  notOk(isNever(null));
+  expect(isNever()).toBeFalsy();
+  expect(isNever(null)).toBeFalsy();
 });

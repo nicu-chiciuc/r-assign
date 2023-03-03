@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import {
   isOptional,
   isOptionalUndefined,
@@ -10,39 +9,39 @@ import {
 test('isOptional', () => {
   const isOptionalString = isOptional(isString);
 
-  equal(isOptional, optional);
+  expect(isOptional).toEqual(optional);
 
-  ok(isOptionalString(''));
-  notOk(isOptionalString());
-  notOk(isOptionalString(null));
+  expect(isOptionalString('')).toBeTruthy();
+  expect(isOptionalString()).toBeFalsy();
+  expect(isOptionalString(null)).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOptional();
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOptional(isOptional(isString));
-  }, TypeError('Optional type cannot be wrapped in optional type'));
+  }).toThrow(TypeError('Optional type cannot be wrapped in optional type'));
 });
 
 test('isOptionalUndefined', () => {
   const isOptionalString = isOptionalUndefined(isString);
 
-  equal(isOptionalUndefined, optionalUndef);
+  expect(isOptionalUndefined).toEqual(optionalUndef);
 
-  ok(isOptionalString());
-  ok(isOptionalString(''));
-  notOk(isOptionalString(null));
+  expect(isOptionalString()).toBeTruthy();
+  expect(isOptionalString('')).toBeTruthy();
+  expect(isOptionalString(null)).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOptionalUndefined();
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOptionalUndefined(isOptionalUndefined(isString));
-  }, TypeError('Optional type cannot be wrapped in optional type'));
+  }).toThrow(TypeError('Optional type cannot be wrapped in optional type'));
 });
