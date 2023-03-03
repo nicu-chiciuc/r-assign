@@ -1,4 +1,3 @@
-import { test, equal, match, notOk, ok, throws } from 'tap';
 import { getSymbol, isSymbol, parseSymbol, symbol } from '../lib/symbol';
 
 const expected = 'expected a symbol value';
@@ -12,52 +11,58 @@ test('getSymbol', () => {
   const getSymbolNoDefault = getSymbol();
   const s = Symbol();
 
-  match(getSymbolNoDefault(), s);
-  match(getSymbolNoDefault('data'), s);
-  match(getSymbolNoDefault(null), s);
+  expect(getSymbolNoDefault()).toBe(s);
+  expect(getSymbolNoDefault('data')).toEqual(s);
+  expect(getSymbolNoDefault(null)).toEqual(s);
 
   const getSymbolRef = getSymbol(s);
 
-  equal(getSymbolRef(), s);
-  equal(getSymbolRef(s), s);
-  equal(getSymbolRef(null), s);
+  expect(getSymbolRef()).toEqual(s);
+  expect(getSymbolRef(s)).toEqual(s);
+  expect(getSymbolRef(null)).toEqual(s);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getSymbol(null);
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
+  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getSymbol('');
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${receivedString}`));
+  }).toThrow(
+    TypeError(`${invalidDefaultValue}, ${expected} ${receivedString}`)
+  );
 });
 
 test('isSymbol', () => {
-  equal(isSymbol, symbol);
+  expect(isSymbol).toEqual(symbol);
 
-  notOk(isSymbol());
-  ok(isSymbol(Symbol()));
+  expect(isSymbol()).toBeFalsy();
+  expect(isSymbol(Symbol())).toBeTruthy();
 });
 
 test('parseSymbol', () => {
   const s = Symbol();
 
-  equal(parseSymbol(s), s);
+  expect(parseSymbol(s)).toEqual(s);
 
-  throws(() => {
+  expect(() => {
     parseSymbol(null);
-  }, TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
 
-  throws(() => {
+  expect(() => {
     parseSymbol('');
-  }, TypeError(`${invalidValue}, ${expected} ${receivedString}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedString}`));
 
-  throws(() => {
+  expect(() => {
     parseSymbol(null, 'key');
-  }, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`));
+  }).toThrow(
+    TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`)
+  );
 
-  throws(() => {
+  expect(() => {
     parseSymbol('', 'key');
-  }, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedString}`));
+  }).toThrow(
+    TypeError(`${invalidValueWithProperty}, ${expected} ${receivedString}`)
+  );
 });

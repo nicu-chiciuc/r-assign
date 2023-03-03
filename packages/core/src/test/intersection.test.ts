@@ -1,4 +1,3 @@
-import { test, match, notOk, ok, throws } from 'tap';
 import {
   getIntersectionOf,
   isAny,
@@ -9,6 +8,7 @@ import {
   isOptional,
   isString,
   parseIntersectionOf,
+  TG,
 } from '../lib';
 
 /**
@@ -25,8 +25,7 @@ const invalidValue = 'Invalid value type';
 const received = 'but received null';
 
 test('getIntersectionOf', () => {
-  /** @type {[TG<{ number: number }>, TG<{ string: string }>]} */
-  const intersection = [
+  const intersection: [TG<{ number: number }>, TG<{ string: string }>] = [
     isObjectOf({
       number: isNumber,
     }),
@@ -40,23 +39,24 @@ test('getIntersectionOf', () => {
     string: '',
   });
 
-  match(getIntersectionOfNumberString(), { number: 0, string: '' });
-  match(getIntersectionOfNumberString(null), { number: 0, string: '' });
-  match(
+  expect(getIntersectionOfNumberString()).toEqual({ number: 0, string: '' });
+  expect(getIntersectionOfNumberString(null)).toEqual({
+    number: 0,
+    string: '',
+  });
+  expect(
     getIntersectionOfNumberString({
       number: 1,
-    }),
-    { number: 0, string: '' }
-  );
-  match(
+    })
+  ).toEqual({ number: 0, string: '' });
+  expect(
     getIntersectionOfNumberString({
       number: 1,
       string: 'data',
-    }),
-    { number: 1, string: 'data' }
-  );
+    })
+  ).toEqual({ number: 1, string: 'data' });
 
-  throws(() => {
+  expect(() => {
     getIntersectionOf(
       [
         isObjectOf({
@@ -66,16 +66,16 @@ test('getIntersectionOf', () => {
           string: isString,
         }),
       ],
-      // @ts-expect-error
+      // @ts-expect-error - Expect throw
       null
     );
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
+  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 });
 
 test('isIntersectionOf', () => {
-  ok(isIntersectionOf([isBoolean, isNumber, isAny])(''));
+  expect(isIntersectionOf([isBoolean, isNumber, isAny])('')).toBeTruthy();
 
-  ok(
+  expect(
     isIntersectionOf([
       isObjectOf({
         number: isNumber,
@@ -84,9 +84,9 @@ test('isIntersectionOf', () => {
         string: isString,
       }),
     ])({ number: 0, string: '' })
-  );
+  ).toBeTruthy();
 
-  ok(
+  expect(
     isIntersectionOf([
       isObjectOf({
         boolean: isBoolean,
@@ -98,9 +98,9 @@ test('isIntersectionOf', () => {
         string: isString,
       }),
     ])({ boolean: false, number: 0, string: '' })
-  );
+  ).toBeTruthy();
 
-  notOk(
+  expect(
     isIntersectionOf([
       isObjectOf({
         boolean: isBoolean,
@@ -112,30 +112,32 @@ test('isIntersectionOf', () => {
         string: isString,
       }),
     ])({ boolean: false, number: 0 })
-  );
+  ).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isIntersectionOf();
-  }, TypeError('Invalid type guards provided'));
+  }).toThrow(TypeError('Invalid type guards provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isIntersectionOf([]);
-  }, TypeError('Not enough type guards, at least two expected'));
+  }).toThrow(TypeError('Not enough type guards, at least two expected'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isIntersectionOf([null, null]);
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
+  expect(() => {
     isIntersectionOf([isNumber, isString]);
-  }, TypeError('Provided intersection is impossible'));
+  }).toThrow(TypeError('Provided intersection is impossible'));
 
-  throws(() => {
+  expect(() => {
     isIntersectionOf([isOptional(isNumber), isString]);
-  }, TypeError('Optional type cannot be used in intersection declaration'));
+  }).toThrow(
+    TypeError('Optional type cannot be used in intersection declaration')
+  );
 });
 
 test('parseIntersectionOf', () => {
@@ -148,18 +150,17 @@ test('parseIntersectionOf', () => {
     }),
   ]);
 
-  match(
+  expect(
     parseIntersectionOfNumberString({
       number: 1,
       string: 'data',
-    }),
-    {
-      number: 1,
-      string: 'data',
-    }
-  );
+    })
+  ).toEqual({
+    number: 1,
+    string: 'data',
+  });
 
-  throws(() => {
+  expect(() => {
     parseIntersectionOfNumberString(null);
-  }, TypeError(`${invalidValue}, ${expected} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${received}`));
 });

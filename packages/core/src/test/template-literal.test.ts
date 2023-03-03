@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import {
   isAny,
   isArrayOf,
@@ -21,124 +20,140 @@ import {
 const declaration = 'template literal declaration';
 
 test('isTemplateLiteralOf', () => {
-  equal(isTemplateLiteralOf, templateLiteral);
+  expect(isTemplateLiteralOf).toEqual(templateLiteral);
 
-  ok(isTemplateLiteralOf([])(''));
-  ok(isTemplateLiteralOf([''])(''));
-  ok(isTemplateLiteralOf([true])('true'));
-  ok(isTemplateLiteralOf([0])('0'));
-  ok(isTemplateLiteralOf(['abc'])('abc'));
-  ok(isTemplateLiteralOf(['abc', 'def'])('abcdef'));
-  ok(isTemplateLiteralOf([isAny])(''));
-  ok(isTemplateLiteralOf([isAny])('abc'));
-  ok(isTemplateLiteralOf([isBigInt])('0'));
-  ok(isTemplateLiteralOf([isBoolean])('false'));
-  ok(isTemplateLiteralOf([isBoolean])('true'));
-  ok(isTemplateLiteralOf([isLiteralOf(['a', 'b']), '-', isNumber])('a-0'));
-  ok(isTemplateLiteralOf([isUnionOf([isBigInt, isString, isNumber])])('0'));
-  ok(isTemplateLiteralOf([isUnionOf([isLiteral('a'), isLiteral('b')])])('a'));
-  ok(
+  expect(isTemplateLiteralOf([])('')).toBeTruthy();
+  expect(isTemplateLiteralOf([''])('')).toBeTruthy();
+  expect(isTemplateLiteralOf([true])('true')).toBeTruthy();
+  expect(isTemplateLiteralOf([0])('0')).toBeTruthy();
+  expect(isTemplateLiteralOf(['abc'])('abc')).toBeTruthy();
+  expect(isTemplateLiteralOf(['abc', 'def'])('abcdef')).toBeTruthy();
+  expect(isTemplateLiteralOf([isAny])('')).toBeTruthy();
+  expect(isTemplateLiteralOf([isAny])('abc')).toBeTruthy();
+  expect(isTemplateLiteralOf([isBigInt])('0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isBoolean])('false')).toBeTruthy();
+  expect(isTemplateLiteralOf([isBoolean])('true')).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isLiteralOf(['a', 'b']), '-', isNumber])('a-0')
+  ).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isUnionOf([isBigInt, isString, isNumber])])('0')
+  ).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isUnionOf([isLiteral('a'), isLiteral('b')])])('a')
+  ).toBeTruthy();
+  expect(
     isTemplateLiteralOf([isUnionOf([isNumber, isLiteralOf(['a', 'b'])])])('a')
-  );
-  ok(
+  ).toBeTruthy();
+  expect(
     isTemplateLiteralOf([
       isUnionOf([isNumber, isTemplateLiteralOf(['a-', isNumber])]),
     ])('a-0')
-  );
-  ok(isTemplateLiteralOf([isLiteral('')])(''));
-  ok(isTemplateLiteralOf([isLiteral('abc')])('abc'));
-  ok(isTemplateLiteralOf([isLiteral(0)])('0'));
-  ok(isTemplateLiteralOf([isLiteralOf(['abc', 'def'])])('def'));
-  ok(isTemplateLiteralOf([isNullable(isBoolean)])('true'));
-  ok(isTemplateLiteralOf([isNullable(isBoolean)])('false'));
-  ok(isTemplateLiteralOf([isNullable(isBoolean)])('null'));
+  ).toBeTruthy();
+  expect(isTemplateLiteralOf([isLiteral('')])('')).toBeTruthy();
+  expect(isTemplateLiteralOf([isLiteral('abc')])('abc')).toBeTruthy();
+  expect(isTemplateLiteralOf([isLiteral(0)])('0')).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isLiteralOf(['abc', 'def'])])('def')
+  ).toBeTruthy();
+  expect(isTemplateLiteralOf([isNullable(isBoolean)])('true')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNullable(isBoolean)])('false')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNullable(isBoolean)])('null')).toBeTruthy();
 
-  ok(isTemplateLiteralOf([isNumber])('0'));
-  ok(isTemplateLiteralOf([isNumber])('0.'));
-  ok(isTemplateLiteralOf([isNumber])('.0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0e0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0e+0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0e-0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0E0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0E+0'));
-  ok(isTemplateLiteralOf([isNumber])('0.0E-0'));
-  ok(isTemplateLiteralOf([isNumber])('00.00E-00'));
-  ok(isTemplateLiteralOf([isNumber])('+0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.'));
-  ok(isTemplateLiteralOf([isNumber])('+.0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0e0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0e+0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0e-0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0E0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0E+0'));
-  ok(isTemplateLiteralOf([isNumber])('+0.0E-0'));
-  ok(isTemplateLiteralOf([isNumber])('+00.00E-00'));
-  ok(isTemplateLiteralOf([isNumber])('-0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.'));
-  ok(isTemplateLiteralOf([isNumber])('-.0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0e0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0e+0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0e-0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0E0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0E+0'));
-  ok(isTemplateLiteralOf([isNumber])('-0.0E-0'));
-  ok(isTemplateLiteralOf([isNumber])('-00.00E-00'));
-  ok(isTemplateLiteralOf([isNumber])('0b01'));
-  ok(isTemplateLiteralOf([isNumber])('0o01234567'));
-  ok(isTemplateLiteralOf([isNumber])('0x0123456789ABCDEFabcdef'));
+  expect(isTemplateLiteralOf([isNumber])('0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('.0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0e0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0e+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0e-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0E0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0E+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0.0E-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('00.00E-00')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+.0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0e0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0e+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0e-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0E0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0E+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+0.0E-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('+00.00E-00')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-.0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0e0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0e+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0e-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0E0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0E+0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-0.0E-0')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('-00.00E-00')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0b01')).toBeTruthy();
+  expect(isTemplateLiteralOf([isNumber])('0o01234567')).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isNumber])('0x0123456789ABCDEFabcdef')
+  ).toBeTruthy();
 
-  ok(isTemplateLiteralOf([isString])(''));
-  ok(isTemplateLiteralOf([isString])('abc'));
-  ok(isTemplateLiteralOf([isString, isString])('abc'));
-  ok(isTemplateLiteralOf([isString, isNumber])('a0'));
-  ok(isTemplateLiteralOf([isTemplateLiteralOf([isString, 'a']), 'b'])('ab'));
-  ok(isTemplateLiteralOf([isUnionOf([isString, isNumber])])('abc'));
-  ok(isTemplateLiteralOf([isUnionOf([isString, isNumber])])('0'));
+  expect(isTemplateLiteralOf([isString])('')).toBeTruthy();
+  expect(isTemplateLiteralOf([isString])('abc')).toBeTruthy();
+  expect(isTemplateLiteralOf([isString, isString])('abc')).toBeTruthy();
+  expect(isTemplateLiteralOf([isString, isNumber])('a0')).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isTemplateLiteralOf([isString, 'a']), 'b'])('ab')
+  ).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isUnionOf([isString, isNumber])])('abc')
+  ).toBeTruthy();
+  expect(
+    isTemplateLiteralOf([isUnionOf([isString, isNumber])])('0')
+  ).toBeTruthy();
 
-  notOk(isTemplateLiteralOf([])());
-  notOk(isTemplateLiteralOf([])(' '));
-  notOk(isTemplateLiteralOf(['abc'])(''));
-  notOk(isTemplateLiteralOf([isBoolean])());
-  notOk(isTemplateLiteralOf([isBoolean])(''));
+  expect(isTemplateLiteralOf([])()).toBeFalsy();
+  expect(isTemplateLiteralOf([])(' ')).toBeFalsy();
+  expect(isTemplateLiteralOf(['abc'])('')).toBeFalsy();
+  expect(isTemplateLiteralOf([isBoolean])()).toBeFalsy();
+  expect(isTemplateLiteralOf([isBoolean])('')).toBeFalsy();
 
-  notOk(isTemplateLiteralOf([isNumber])(''));
-  notOk(isTemplateLiteralOf([isNumber])('+'));
-  notOk(isTemplateLiteralOf([isNumber])('-'));
-  notOk(isTemplateLiteralOf([isNumber])('.'));
-  notOk(isTemplateLiteralOf([isNumber])('0.0e'));
-  notOk(isTemplateLiteralOf([isNumber])('0.0e+'));
-  notOk(isTemplateLiteralOf([isNumber])('0.0e-'));
-  notOk(isTemplateLiteralOf([isNumber])('+0b0'));
-  notOk(isTemplateLiteralOf([isNumber])('+0o0'));
-  notOk(isTemplateLiteralOf([isNumber])('+0x0'));
-  notOk(isTemplateLiteralOf([isNumber])('-0b0'));
-  notOk(isTemplateLiteralOf([isNumber])('-0o0'));
-  notOk(isTemplateLiteralOf([isNumber])('-0x0'));
+  expect(isTemplateLiteralOf([isNumber])('')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('+')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('-')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('.')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('0.0e')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('0.0e+')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('0.0e-')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('+0b0')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('+0o0')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('+0x0')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('-0b0')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('-0o0')).toBeFalsy();
+  expect(isTemplateLiteralOf([isNumber])('-0x0')).toBeFalsy();
 
   // Check for working escaped characters
-  notOk(isTemplateLiteralOf([isNumber, '.+'])('0...'));
+  expect(isTemplateLiteralOf([isNumber, '.+'])('0...')).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isTemplateLiteralOf();
-  }, TypeError('Invalid template literal provided'));
+  }).toThrow(TypeError('Invalid template literal provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isTemplateLiteralOf([isSymbol]);
-  }, TypeError('Invalid type for template literal type'));
+  }).toThrow(TypeError('Invalid type for template literal type'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isTemplateLiteralOf([isArrayOf(isString)]);
-  }, TypeError('Invalid type for template literal type'));
+  }).toThrow(TypeError('Invalid type for template literal type'));
 
-  throws(() => {
+  expect(() => {
     isTemplateLiteralOf([
-      // @ts-expect-error
+      // @ts-expect-error - Expect throw
       isIntersectionOf([
         isObjectOf({
           a: isNumber,
@@ -148,19 +163,19 @@ test('isTemplateLiteralOf', () => {
         }),
       ]),
     ]);
-  }, TypeError('Invalid type for template literal type'));
+  }).toThrow(TypeError('Invalid type for template literal type'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isTemplateLiteralOf([isUnionOf([isSymbol, isString])]);
-  }, TypeError('Invalid type for template literal type'));
+  }).toThrow(TypeError('Invalid type for template literal type'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isTemplateLiteralOf([isUnionOf([isArrayOf(isString), isString])]);
-  }, TypeError('Invalid type for template literal type'));
+  }).toThrow(TypeError('Invalid type for template literal type'));
 
-  throws(() => {
+  expect(() => {
     isTemplateLiteralOf([isOptional(isString)]);
-  }, TypeError(`Optional type cannot be used in ${declaration}`));
+  }).toThrow(TypeError(`Optional type cannot be used in ${declaration}`));
 });

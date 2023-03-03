@@ -1,4 +1,3 @@
-import { test, equal, match, notOk, ok, throws } from 'tap';
 import {
   getObjectOf,
   getStrictObjectOf,
@@ -43,103 +42,114 @@ const receivedCircularRef = `but received a value of type ${circularRefShape}`;
 test('getObjectOf', () => {
   const getObjectABC = getObjectOf({ abc: isString }, { abc: '' });
 
-  match(getObjectABC(), { abc: '' });
-  match(getObjectABC({ abc: '' }), { abc: '' });
-  match(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-  match(
+  expect(getObjectABC()).toEqual({ abc: '' });
+  expect(getObjectABC({ abc: '' })).toEqual({ abc: '' });
+  expect(getObjectABC({ abc: 'abc' })).toEqual({ abc: 'abc' });
+  expect(
     getObjectABC({
       abc: 'abc',
       def: 'def',
-    }),
-    {
-      abc: 'abc',
-    }
-  );
+    })
+  ).toEqual({
+    abc: 'abc',
+  });
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getObjectOf({ abc: isString }, null);
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
+  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getObjectOf({ abc: isOptional(isString) }, null);
-  }, TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`));
+  }).toThrow(
+    TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`)
+  );
 });
 
 test('getStrictObjectOf', () => {
   const getObjectABC = getStrictObjectOf({ abc: isString }, { abc: '' });
 
-  match(getObjectABC(), { abc: '' });
-  match(getObjectABC({ abc: '' }), { abc: '' });
-  match(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-  match(getObjectABC({ abc: 'abc', def: 'def' }), { abc: '' });
+  expect(getObjectABC()).toEqual({ abc: '' });
+  expect(getObjectABC({ abc: '' })).toEqual({ abc: '' });
+  expect(getObjectABC({ abc: 'abc' })).toEqual({ abc: 'abc' });
+  expect(getObjectABC({ abc: 'abc', def: 'def' })).toEqual({ abc: '' });
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getStrictObjectOf({ abc: isString }, null);
-  }, TypeError(`${invalidDefaultValue}, ${expectedStrict} ${received}`));
+  }).toThrow(
+    TypeError(`${invalidDefaultValue}, ${expectedStrict} ${received}`)
+  );
 });
 
 test('isKeyOf', () => {
-  equal(isKeyOf, keyof);
+  expect(isKeyOf).toEqual(keyof);
 
-  ok(isKeyOf(isObjectOf({ abc: isString }))('abc'));
-  notOk(isKeyOf(isObjectOf({ abc: isString }))('def'));
-  notOk(isKeyOf(isObjectOf({}))('abc'));
+  expect(isKeyOf(isObjectOf({ abc: isString }))('abc')).toBeTruthy();
+  expect(isKeyOf(isObjectOf({ abc: isString }))('def')).toBeFalsy();
+  expect(isKeyOf(isObjectOf({}))('abc')).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isKeyOf(isString);
-  }, TypeError('Invalid type provided, expected an object type'));
+  }).toThrow(TypeError('Invalid type provided, expected an object type'));
 });
 
 test('isObjectOf', () => {
-  equal(isObjectOf, object);
+  expect(isObjectOf).toEqual(object);
 
-  ok(isObjectOf({})({}));
-  ok(isObjectOf({ a: isString })({ a: 'abc' }));
-  ok(isObjectOf({ a: isString })({ a: 'abc', b: 'def' }));
-  ok(isObjectOf({ a: isOptional(isString) })({ a: 'abc' }));
-  ok(isObjectOf({ a: isOptional(isString) })({}));
-  notOk(isObjectOf({ a: isOptional(isString) })({ a: undefined }));
+  expect(isObjectOf({})({})).toBeTruthy();
+  expect(isObjectOf({ a: isString })({ a: 'abc' })).toBeTruthy();
+  expect(isObjectOf({ a: isString })({ a: 'abc', b: 'def' })).toBeTruthy();
+  expect(isObjectOf({ a: isOptional(isString) })({ a: 'abc' })).toBeTruthy();
+  expect(isObjectOf({ a: isOptional(isString) })({})).toBeTruthy();
+  expect(isObjectOf({ a: isOptional(isString) })({ a: undefined })).toBeFalsy();
 
-  ok(isObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' }));
-  ok(isObjectOf({ a: isOptionalUndefined(isString) })({ a: undefined }));
-  ok(isObjectOf({ a: isOptionalUndefined(isString) })({}));
-  notOk(isObjectOf({ a: isOptionalUndefined(isString) })({ a: null }));
+  expect(
+    isObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' })
+  ).toBeTruthy();
+  expect(
+    isObjectOf({ a: isOptionalUndefined(isString) })({ a: undefined })
+  ).toBeTruthy();
+  expect(isObjectOf({ a: isOptionalUndefined(isString) })({})).toBeTruthy();
+  expect(
+    isObjectOf({ a: isOptionalUndefined(isString) })({ a: null })
+  ).toBeFalsy();
 
-  ok(isObjectOf({}, isRecordOf(isString, isString))({}));
-  ok(isObjectOf({}, isRecordOf(isString, isString))({ a: 'a' }));
+  expect(isObjectOf({}, isRecordOf(isString, isString))({})).toBeTruthy();
+  expect(
+    isObjectOf({}, isRecordOf(isString, isString))({ a: 'a' })
+  ).toBeTruthy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isObjectOf();
-  }, TypeError(invalidShape));
+  }).toThrow(TypeError(invalidShape));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isObjectOf(null);
-  }, TypeError(invalidShape));
+  }).toThrow(TypeError(invalidShape));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isObjectOf({}, isString);
-  }, TypeError(invalidMapping));
+  }).toThrow(TypeError(invalidMapping));
 
-  throws(() => {
+  expect(() => {
     isObjectOf({}, isStrictObjectOf({}));
-  }, TypeError(invalidMapping));
+  }).toThrow(TypeError(invalidMapping));
 
-  throws(() => {
+  expect(() => {
     parseType(isObjectOf({}, isObjectOf({ a: isString })))({});
-  });
+  }).toThrow;
 });
 
 test('isOmitFrom', () => {
-  equal(isOmitFrom, omit);
+  expect(isOmitFrom).toEqual(omit);
 
-  ok(
+  expect(
     isOmitFrom(
       isObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
@@ -147,8 +157,8 @@ test('isOmitFrom', () => {
       def: 'def',
       ghi: 'ghi',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isOmitFrom(
       isObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
@@ -156,8 +166,8 @@ test('isOmitFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  );
-  ok(
+  ).toBeFalsy();
+  expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
@@ -165,8 +175,8 @@ test('isOmitFrom', () => {
       def: 'def',
       ghi: 'ghi',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
@@ -174,94 +184,94 @@ test('isOmitFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  );
+  ).toBeFalsy();
 
-  ok(
+  expect(
     isOmitFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
       'abc',
       'def',
     ])({
       ghi: 'ghi',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isOmitFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
       'abc',
       'def',
     ])({
       abc: 'abc',
     })
-  );
-  ok(
+  ).toBeFalsy();
+  expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       ['abc', 'def']
     )({
       ghi: 'ghi',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       ['abc', 'def']
     )({
       abc: 'abc',
     })
-  );
+  ).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOmitFrom(isString);
-  }, TypeError('Invalid type provided, expected an object type'));
+  }).toThrow(TypeError('Invalid type provided, expected an object type'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOmitFrom(isObjectOf({ abc: isString }));
-  }, TypeError(invalidKeysType));
+  }).toThrow(TypeError(invalidKeysType));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isOmitFrom(isObjectOf({ abc: isString }), [0]);
-  }, TypeError(invalidKeysType));
+  }).toThrow(TypeError(invalidKeysType));
 });
 
 test('isPickFrom', () => {
-  equal(isPickFrom, pick);
+  expect(isPickFrom).toEqual(pick);
 
-  ok(
+  expect(
     isPickFrom(
       isObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
     )({
       abc: 'abc',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isPickFrom(
       isObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
     )({
       def: 'def',
     })
-  );
-  ok(
+  ).toBeFalsy();
+  expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
     )({
       abc: 'abc',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       'abc'
     )({
       def: 'def',
     })
-  );
+  ).toBeFalsy();
 
-  ok(
+  expect(
     isPickFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
       'abc',
       'def',
@@ -269,16 +279,16 @@ test('isPickFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isPickFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
       'abc',
       'def',
     ])({
       abc: 'abc',
     })
-  );
-  ok(
+  ).toBeFalsy();
+  expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       ['abc', 'def']
@@ -286,82 +296,92 @@ test('isPickFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  );
-  notOk(
+  ).toBeTruthy();
+  expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
       ['abc', 'def']
     )({
       abc: 'abc',
     })
-  );
+  ).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isPickFrom(isString);
-  }, TypeError('Invalid type provided, expected an object type'));
+  }).toThrow(TypeError('Invalid type provided, expected an object type'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isPickFrom(isObjectOf({ abc: isString }));
-  }, TypeError(invalidKeysType));
+  }).toThrow(TypeError(invalidKeysType));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isPickFrom(isObjectOf({ abc: isString }), [0]);
-  }, TypeError(invalidKeysType));
+  }).toThrow(TypeError(invalidKeysType));
 });
 
 test('isStrictObjectOf', () => {
-  equal(isStrictObjectOf, strictObject);
+  expect(isStrictObjectOf).toEqual(strictObject);
 
-  ok(isStrictObjectOf({ a: isString })({ a: 'abc' }));
-  ok(isStrictObjectOf({ a: isOptional(isString) })({ a: 'abc' }));
-  ok(isStrictObjectOf({ a: isOptional(isString) })({}));
-  ok(isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' }));
-  ok(
+  expect(isStrictObjectOf({ a: isString })({ a: 'abc' })).toBeTruthy();
+  expect(
+    isStrictObjectOf({ a: isOptional(isString) })({ a: 'abc' })
+  ).toBeTruthy();
+  expect(isStrictObjectOf({ a: isOptional(isString) })({})).toBeTruthy();
+  expect(
+    isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' })
+  ).toBeTruthy();
+  expect(
     isStrictObjectOf({ a: isOptionalUndefined(isString) })({
       a: undefined,
     })
-  );
-  ok(isStrictObjectOf({ a: isOptionalUndefined(isString) })({}));
-  notOk(isStrictObjectOf({ a: isString })({ a: 'abc', b: 'def' }));
-  notOk(isStrictObjectOf({ a: isOptional(isString) })({ a: undefined }));
-  notOk(isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: null }));
+  ).toBeTruthy();
+  expect(
+    isStrictObjectOf({ a: isOptionalUndefined(isString) })({})
+  ).toBeTruthy();
+  expect(isStrictObjectOf({ a: isString })({ a: 'abc', b: 'def' })).toBeFalsy();
+  expect(
+    isStrictObjectOf({ a: isOptional(isString) })({ a: undefined })
+  ).toBeFalsy();
+  expect(
+    isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: null })
+  ).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isStrictObjectOf();
-  }, TypeError(invalidShape));
+  }).toThrow(TypeError(invalidShape));
 });
 
 test('parseObjectOf', () => {
   const parseObjectABC = parseObjectOf({ abc: isString });
 
-  match(parseObjectABC({ abc: '' }), { abc: '' });
-  match(parseObjectABC({ abc: '', def: null }), { abc: '' });
+  expect(parseObjectABC({ abc: '' })).toEqual({ abc: '' });
+  expect(parseObjectABC({ abc: '', def: null })).toEqual({ abc: '' });
 
   const obj: Record<string, unknown> = {};
 
-  obj.obj = obj;
+  obj['obj'] = obj;
 
-  throws(() => {
+  expect(() => {
     parseObjectABC(null);
-  }, TypeError(`${invalidValue}, ${expected} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${received}`));
 
-  throws(() => {
+  expect(() => {
     parseObjectABC({});
-  }, TypeError(`${invalidValue}, ${expected} ${receivedEmptyObject}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedEmptyObject}`));
 
-  throws(() => {
+  expect(() => {
     parseObjectABC({
       abc: 0,
     });
-  }, TypeError(`${invalidValue}, ${expected} ${receivedObject}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedObject}`));
 
-  throws(() => {
+  expect(() => {
     parseObjectABC(obj);
-  }, TypeError(`${invalidValue}, ${expected} ${receivedCircularRef}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedCircularRef}`));
 
   const parseObjectABCWithPrototype = parseObjectOf(
     assign(
@@ -374,15 +394,15 @@ test('parseObjectOf', () => {
     )
   );
 
-  match(parseObjectABCWithPrototype({ abc: '' }), { abc: '' });
+  expect(parseObjectABCWithPrototype({ abc: '' })).toEqual({ abc: '' });
 });
 
 test('parseStrictObjectOf', () => {
   const parseObjectABC = parseStrictObjectOf({ abc: isString });
 
-  match(parseObjectABC({ abc: '' }), { abc: '' });
+  expect(parseObjectABC({ abc: '' })).toEqual({ abc: '' });
 
-  throws(() => {
+  expect(() => {
     parseObjectABC(null);
-  }, TypeError(`${invalidValue}, ${expectedStrict} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expectedStrict} ${received}`));
 });

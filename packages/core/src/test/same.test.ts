@@ -1,4 +1,3 @@
-import { test, equal, throws } from 'tap';
 import {
   isArrayOf,
   isObjectOf,
@@ -11,20 +10,20 @@ import {
 } from '../lib';
 
 test('setSame', () => {
-  equal(setSame, same);
+  expect(setSame).toBe(same);
 
   const array = ['a'];
 
-  equal(parseType(setSame(isArrayOf(isString)))(array), array);
-  equal(parseType(setSame(isTupleOf([isString])))(array), array);
+  expect(parseType(setSame(isArrayOf(isString)))(array)).toBe(array);
+  expect(parseType(setSame(isTupleOf([isString])))(array)).toBe(array);
 
   const object = { a: 'a', b: 'b' };
 
-  equal(parseType(setSame(isObjectOf({ a: isString })))(object), object);
-  equal(parseType(setSame(isRecordOf(isString)))(object), object);
+  expect(parseType(setSame(isObjectOf({ a: isString })))(object)).toBe(object);
+  expect(parseType(setSame(isRecordOf(isString)))(object)).toBe(object);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     setSame(isString);
-  }, TypeError);
+  }).toThrow(TypeError);
 });

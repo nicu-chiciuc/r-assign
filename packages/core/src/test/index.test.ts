@@ -3,14 +3,14 @@ import { rAssign } from '../src';
 
 test('No arguments', () => {
   throws(() => {
-    // @ts-expect-error
+    // @ts-expect-error - Expect throw
     rAssign();
   });
 });
 
 test('Invalid schema', () => {
   throws(() => {
-    // @ts-expect-error
+    // @ts-expect-error - Expect throw
     rAssign({ data: null }, {});
   });
 });

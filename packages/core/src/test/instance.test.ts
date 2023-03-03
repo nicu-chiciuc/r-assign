@@ -1,4 +1,3 @@
-import { test, equal, match, notOk, ok, throws } from 'tap';
 import {
   getInstanceOf,
   instance,
@@ -14,35 +13,35 @@ const received = 'but received undefined';
 test('getInstanceOf', () => {
   const getDate = getInstanceOf(Date, new Date());
 
-  match(getDate(), new Date());
-  match(getDate(new Date()), new Date());
+  expect(getDate()).toEqual(new Date());
+  expect(getDate(new Date())).toEqual(new Date());
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getInstanceOf(Date);
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
+  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 });
 
 test('isInstanceOf', () => {
   const isDate = isInstanceOf(Date);
 
-  equal(isInstanceOf, instance);
+  expect(isInstanceOf).toEqual(instance);
 
-  ok(isDate(new Date()));
-  notOk(isDate(null));
+  expect(isDate(new Date())).toBeTruthy();
+  expect(isDate(null)).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isInstanceOf();
-  }, TypeError('Invalid constructor provided'));
+  }).toThrow(TypeError('Invalid constructor provided'));
 });
 
 test('parseInstanceOf', () => {
   const parseDate = parseInstanceOf(Date);
 
-  match(parseDate(new Date()), new Date());
+  expect(parseDate(new Date())).toEqual(new Date());
 
-  throws(() => {
+  expect(() => {
     parseDate();
-  }, TypeError(`${invalidValue}, ${expected} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${received}`));
 });

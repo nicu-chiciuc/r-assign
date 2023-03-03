@@ -9,7 +9,7 @@ const invalidSetSame = `Invalid type for "setSame()", ${allowedTypes}`;
  */
 function setSame<T extends TypeGuard<Record<keyof any, any> | any[]>>(
   type: T,
-  same: boolean
+  same = false
 ): T {
   const meta = getTypeGuardMeta(type);
 

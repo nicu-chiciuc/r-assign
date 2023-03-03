@@ -1,4 +1,3 @@
-import { test, equal, match, notOk, ok, throws } from 'tap';
 import {
   getUnionOf,
   isAny,
@@ -24,93 +23,99 @@ const invalidValue = 'Invalid value type';
 test('getUnionOf', () => {
   const getStringOrNumber = getUnionOf([isString, isNumber], '');
 
-  equal(getStringOrNumber(), '');
-  equal(getStringOrNumber(0), 0);
-  equal(getStringOrNumber(1), 1);
-  equal(getStringOrNumber(''), '');
-  equal(getStringOrNumber('data'), 'data');
+  expect(getStringOrNumber()).toEqual('');
+  expect(getStringOrNumber(0)).toEqual(0);
+  expect(getStringOrNumber(1)).toEqual(1);
+  expect(getStringOrNumber('')).toEqual('');
+  expect(getStringOrNumber('data')).toEqual('data');
 
-  match(
+  expect(
     getUnionOf(
       [isObjectOf({ prop: isString }), isObjectOf({ prop: isNumber })],
       { prop: 'data' }
-    )(),
-    { prop: 'data' }
-  );
-  match(
+    )()
+  ).toEqual({ prop: 'data' });
+  expect(
     getUnionOf(
       [isObjectOf({ prop: isString }), isObjectOf({ prop: isNumber })],
       { prop: 'data' }
-    )({ prop: 'prop' }),
-    { prop: 'prop' }
-  );
+    )({ prop: 'prop' })
+  ).toEqual({ prop: 'prop' });
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getUnionOf([isString, isNumber], null);
-  }, TypeError(`${invalidDefaultValue}, ${expected} but received null`));
+  }).toThrow(
+    TypeError(`${invalidDefaultValue}, ${expected} but received null`)
+  );
 });
 
 test('isUnionOf', () => {
-  equal(isUnionOf, union);
+  expect(isUnionOf).toEqual(union);
 
-  ok(isUnionOf([isBoolean, isNumber, isAny])(''));
-  ok(isUnionOf([isBoolean, isNumber])(true));
-  ok(isUnionOf([isBoolean, isNumber])(0));
-  ok(isUnionOf([isLiteral('a'), isString])(''));
-  ok(isUnionOf([isLiteral('a'), isLiteralOf(['a', 'b'])])('a'));
-  ok(isUnionOf([isLiteralOf(['a', 0, 1]), isString])('a'));
-  ok(isUnionOf([isLiteralOf(['a', 0]), isString])('a'));
-  ok(isUnionOf([isTemplateLiteralOf([isNumber]), isString])(''));
+  expect(isUnionOf([isBoolean, isNumber, isAny])('')).toBeTruthy();
+  expect(isUnionOf([isBoolean, isNumber])(true)).toBeTruthy();
+  expect(isUnionOf([isBoolean, isNumber])(0)).toBeTruthy();
+  expect(isUnionOf([isLiteral('a'), isString])('')).toBeTruthy();
+  expect(
+    isUnionOf([isLiteral('a'), isLiteralOf(['a', 'b'])])('a')
+  ).toBeTruthy();
+  expect(isUnionOf([isLiteralOf(['a', 0, 1]), isString])('a')).toBeTruthy();
+  expect(isUnionOf([isLiteralOf(['a', 0]), isString])('a')).toBeTruthy();
+  expect(
+    isUnionOf([isTemplateLiteralOf([isNumber]), isString])('')
+  ).toBeTruthy();
 
   // TODO: add a check for equivalent types
-  ok(isUnionOf([isArrayOf(isBoolean), isArrayOf(isBoolean)])([true]));
+  expect(
+    isUnionOf([isArrayOf(isBoolean), isArrayOf(isBoolean)])([true])
+  ).toBeTruthy();
 
-  notOk(isUnionOf([isBoolean, isNumber])(''));
+  expect(isUnionOf([isBoolean, isNumber])('')).toBeFalsy();
 
   const isBooleanOrNumberOrString = isUnionOf([
     isBoolean,
     isUnionOf([isNumber, isString]),
   ]);
 
-  ok(isBooleanOrNumberOrString(true));
-  ok(isBooleanOrNumberOrString(0));
-  ok(isBooleanOrNumberOrString(''));
-  notOk(isBooleanOrNumberOrString());
+  expect(isBooleanOrNumberOrString(true)).toBeTruthy();
+  expect(isBooleanOrNumberOrString(0)).toBeTruthy();
+  expect(isBooleanOrNumberOrString('')).toBeTruthy();
+  expect(isBooleanOrNumberOrString()).toBeFalsy();
 
-  equal(isUnionOf([isBoolean, isBoolean]), isBoolean);
+  expect(isUnionOf([isBoolean, isBoolean])).toEqual(isBoolean);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isUnionOf();
-  }, TypeError('Invalid type guards provided'));
+  }).toThrow(TypeError('Invalid type guards provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isUnionOf([]);
-  }, TypeError('Not enough type guards, at least two expected'));
+  }).toThrow(TypeError('Not enough type guards, at least two expected'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isUnionOf(Array(1 + 1));
-  }, TypeError('Not enough type guards, at least two expected'));
+  }).toThrow(TypeError('Not enough type guards, at least two expected'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isUnionOf([null, null]);
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
+  expect(() => {
     isUnionOf([isOptional(isString), isString]);
-  }, TypeError(invalidOptionalType));
+  }).toThrow(TypeError(invalidOptionalType));
 });
 
 test('parseUnionOf', () => {
   const parseStringOrNumber = parseUnionOf([isString, isNumber]);
 
-  equal(parseStringOrNumber(''), '');
+  expect(parseStringOrNumber('')).toEqual('');
 
-  throws(() => {
+  expect(() => {
     parseStringOrNumber(null);
-  }, TypeError(`${invalidValue}, ${expected} but received null`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} but received null`));
 });
