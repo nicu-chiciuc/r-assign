@@ -12,7 +12,7 @@ import {
   nullish,
   parseNull,
   parseNullable,
-} from '../src/lib';
+} from '../lib';
 
 const expectedNull = 'expected a null value';
 const expectedNullable = 'expected an union of string | null';

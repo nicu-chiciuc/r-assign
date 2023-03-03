@@ -8,7 +8,7 @@ import {
   number,
   parseAnyNumber,
   parseNumber,
-} from '../src/lib/number';
+} from '../lib/number';
 
 const expected = 'expected a number value but received';
 const expectedFinite = 'expected a finite number value but received';

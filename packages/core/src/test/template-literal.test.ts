@@ -16,7 +16,7 @@ import {
   isTemplateLiteralOf,
   isUnionOf,
   templateLiteral,
-} from '../src/lib';
+} from '../lib';
 
 const declaration = 'template literal declaration';
 

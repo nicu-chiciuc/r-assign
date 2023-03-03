@@ -8,7 +8,7 @@ import {
   date,
   isAnyDate,
   isDate,
-} from '../src/lib';
+} from '../lib';
 
 test('asAnyDate', () => {
   equal(asAnyDate, convertToAnyDate);

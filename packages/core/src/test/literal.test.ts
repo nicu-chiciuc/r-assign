@@ -8,7 +8,7 @@ import {
   literals,
   parseLiteral,
   parseLiteralOf,
-} from '../src/lib/literal';
+} from '../lib/literal';
 
 const expectedFalse = 'expected false literal';
 const expectedLiterals = 'expected a union of literals "a" | "b"';

@@ -1,10 +1,5 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import {
-  boolean,
-  getBoolean,
-  isBoolean,
-  parseBoolean,
-} from '../src/lib/boolean';
+import { boolean, getBoolean, isBoolean, parseBoolean } from '../lib/boolean';
 
 const expected = 'expected a boolean value';
 const invalidDefaultValue = 'Invalid default value type';

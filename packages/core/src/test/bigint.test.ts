@@ -1,5 +1,5 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import { bigint, getBigInt, isBigInt, parseBigInt } from '../src/lib/bigint';
+import { bigint, getBigInt, isBigInt, parseBigInt } from '../lib/bigint';
 
 const expected = 'expected a BigInt value';
 const invalidDefaultValue = 'Invalid default value type';

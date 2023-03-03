@@ -1,5 +1,5 @@
 import { test, throws } from 'tap';
-import { assertType, isOptional, isString } from '../src/lib';
+import { assertType, isOptional, isString } from '../lib';
 
 const invalidValue = 'Invalid value type';
 const expected = 'expected a string value';

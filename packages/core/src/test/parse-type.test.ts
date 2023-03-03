@@ -11,7 +11,7 @@ import {
   isTupleRestOf,
   isUnionOf,
   parseType,
-} from '../src/lib';
+} from '../lib';
 
 const emptyArray = 'an empty array []';
 const expected = 'expected a string value';

@@ -11,7 +11,7 @@ import {
   isString,
   isTupleOf,
   isUnionOf,
-} from '../src/lib';
+} from '../lib';
 
 const expected = 'expected a string value';
 const invalidDefaultValue = 'Invalid default value type';

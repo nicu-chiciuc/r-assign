@@ -1,5 +1,5 @@
 import { test, equal, match, notOk, ok, throws } from 'tap';
-import { getSymbol, isSymbol, parseSymbol, symbol } from '../src/lib/symbol';
+import { getSymbol, isSymbol, parseSymbol, symbol } from '../lib/symbol';
 
 const expected = 'expected a symbol value';
 const invalidDefaultValue = 'Invalid default value type';

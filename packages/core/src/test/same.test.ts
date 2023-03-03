@@ -8,7 +8,7 @@ import {
   parseType,
   same,
   setSame,
-} from '../src/lib';
+} from '../lib';
 
 test('setSame', () => {
   equal(setSame, same);

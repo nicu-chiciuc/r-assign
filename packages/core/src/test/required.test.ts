@@ -9,7 +9,7 @@ import {
   isString,
   isTupleOf,
   required,
-} from '../src/lib';
+} from '../lib';
 
 test('isRequired', () => {
   equal(isRequired, required);

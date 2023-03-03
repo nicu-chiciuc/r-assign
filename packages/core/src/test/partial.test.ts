@@ -12,7 +12,7 @@ import {
   isTupleOf,
   partial,
   partialUndef,
-} from '../src/lib';
+} from '../lib';
 
 test('isPartial', () => {
   equal(isPartial, partial);

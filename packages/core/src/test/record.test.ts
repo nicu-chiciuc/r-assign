@@ -12,7 +12,7 @@ import {
   isTemplateLiteralOf,
   isUnionOf,
   record,
-} from '../src/lib';
+} from '../lib';
 
 test('isRecordOf', () => {
   equal(isRecordOf, record);

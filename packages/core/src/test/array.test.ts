@@ -19,11 +19,7 @@ const receivedObjectArray = 'but received a value of type Object[]';
 const receivedStringArray = 'but received a value of type String[]';
 
 test('getArrayOf', () => {
-  const getArrayOfString = getArrayOf(isString, ['default']);
-
-  console.log({
-    getArrayOfString,
-  });
+  const getArrayOfString = getArrayOf(isString);
 
   expect(getArrayOfString()).toEqual([]);
   expect(getArrayOfString(null)).toEqual([]);

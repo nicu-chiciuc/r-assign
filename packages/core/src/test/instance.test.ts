@@ -4,7 +4,7 @@ import {
   instance,
   isInstanceOf,
   parseInstanceOf,
-} from '../src/lib/instance';
+} from '../lib/instance';
 
 const expected = 'expected an instance of Date';
 const invalidDefaultValue = 'Invalid default value type';

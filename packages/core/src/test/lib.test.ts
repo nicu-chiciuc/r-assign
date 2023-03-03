@@ -1,5 +1,5 @@
 import { test, ok } from 'tap';
-import * as lib from '../src/lib';
+import * as lib from '../lib';
 
 const libKeys = Object.keys(lib);
 

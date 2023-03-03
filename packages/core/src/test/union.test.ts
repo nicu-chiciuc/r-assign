@@ -14,7 +14,7 @@ import {
   isUnionOf,
   parseUnionOf,
   union,
-} from '../src/lib';
+} from '../lib';
 
 const expected = 'expected an union of string | number';
 const invalidDefaultValue = 'Invalid default value type';

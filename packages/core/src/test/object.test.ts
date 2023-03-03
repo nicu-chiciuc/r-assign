@@ -19,7 +19,7 @@ import {
   parseType,
   pick,
   strictObject,
-} from '../src/lib';
+} from '../lib';
 
 const { assign, create } = Object;
 

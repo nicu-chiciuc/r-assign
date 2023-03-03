@@ -5,7 +5,7 @@ import {
   isString,
   optional,
   optionalUndef,
-} from '../src/lib';
+} from '../lib';
 
 test('isOptional', () => {
   const isOptionalString = isOptional(isString);

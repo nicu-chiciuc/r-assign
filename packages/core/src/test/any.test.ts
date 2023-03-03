@@ -6,7 +6,7 @@ test('getAny', () => {
 });
 
 test('isAny', () => {
-  expect(isAny()).toBe(any);
+  expect(isAny).toBe(any);
 
   expect(isAny()).toBeTruthy();
   expect(isAny(null)).toBeTruthy();

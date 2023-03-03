@@ -9,11 +9,11 @@ import {
   isOptional,
   isString,
   parseIntersectionOf,
-} from '../src/lib';
+} from '../lib';
 
 /**
  * @template [T = any]
- * @typedef {import('../src/lib').TG<T>} TG
+ * @typedef {import('../lib').TG<T>} TG
  */
 
 const numberObject = '{\n "number": number;\n}';

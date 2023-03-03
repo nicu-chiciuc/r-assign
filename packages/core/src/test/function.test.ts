@@ -1,11 +1,5 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import {
-  func,
-  isFunction,
-  isOptional,
-  isString,
-  isTupleRestOf,
-} from '../src/lib';
+import { func, isFunction, isOptional, isString, isTupleRestOf } from '../lib';
 
 test('isFunction', () => {
   equal(isFunction, func);

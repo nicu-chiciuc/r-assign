@@ -10,7 +10,7 @@ import {
   parseTupleOf,
   tuple,
   tupleRest,
-} from '../src/lib';
+} from '../lib';
 
 const invalidDefaultValue = 'Invalid default value type';
 const invalidValue = 'Invalid value type';

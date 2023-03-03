@@ -1,5 +1,5 @@
 import { test, equal, notOk } from 'tap';
-import { isNever, never } from '../src/lib/never';
+import { isNever, never } from '../lib/never';
 
 test('isNever', () => {
   equal(isNever, never);
