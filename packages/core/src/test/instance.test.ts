@@ -10,11 +10,13 @@ const invalidDefaultValue = 'Invalid default value type';
 const invalidValue = 'Invalid value type';
 const received = 'but received undefined';
 
-test('getInstanceOf', () => {
-  const getDate = getInstanceOf(Date, new Date());
+const currentDate = new Date();
 
-  expect(getDate()).toEqual(new Date());
-  expect(getDate(new Date())).toEqual(new Date());
+test('getInstanceOf', () => {
+  const getDate = getInstanceOf(Date, currentDate);
+
+  expect(getDate()).toEqual(currentDate);
+  expect(getDate(currentDate)).toEqual(currentDate);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -27,7 +29,7 @@ test('isInstanceOf', () => {
 
   expect(isInstanceOf).toEqual(instance);
 
-  expect(isDate(new Date())).toBeTruthy();
+  expect(isDate(currentDate)).toBeTruthy();
   expect(isDate(null)).toBeFalsy();
 
   expect(() => {
@@ -39,7 +41,7 @@ test('isInstanceOf', () => {
 test('parseInstanceOf', () => {
   const parseDate = parseInstanceOf(Date);
 
-  expect(parseDate(new Date())).toEqual(new Date());
+  expect(parseDate(currentDate)).toEqual(currentDate);
 
   expect(() => {
     parseDate();

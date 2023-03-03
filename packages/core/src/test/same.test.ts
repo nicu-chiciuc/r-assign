@@ -19,8 +19,10 @@ test('setSame', () => {
 
   const object = { a: 'a', b: 'b' };
 
-  expect(parseType(setSame(isObjectOf({ a: isString })))(object)).toBe(object);
-  expect(parseType(setSame(isRecordOf(isString)))(object)).toBe(object);
+  expect(parseType(setSame(isObjectOf({ a: isString })))(object)).toEqual(
+    object
+  );
+  expect(parseType(setSame(isRecordOf(isString)))(object)).toEqual(object);
 
   expect(() => {
     // @ts-expect-error - Expect throw

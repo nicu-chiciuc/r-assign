@@ -1,22 +1,21 @@
-import { test, match, throws } from 'tap';
-import { rAssign } from '../src';
+import { rAssign } from '../index';
 
 test('No arguments', () => {
-  throws(() => {
+  expect(() => {
     // @ts-expect-error - Expect throw
     rAssign();
-  });
+  }).toThrow;
 });
 
 test('Invalid schema', () => {
-  throws(() => {
+  expect(() => {
     // @ts-expect-error - Expect throw
     rAssign({ data: null }, {});
-  });
+  }).toThrow;
 });
 
 test('Schema with skipped property', () => {
-  match(
+  expect(
     rAssign(
       {
         data: () => {
@@ -24,13 +23,12 @@ test('Schema with skipped property', () => {
         },
       },
       {}
-    ),
-    {}
-  );
+    )
+  ).toEqual({});
 });
 
 test('Schema with one property', () => {
-  match(rAssign({ data: () => null }, {}), { data: null });
+  expect(rAssign({ data: () => null }, {})).toEqual({ data: null });
 });
 
 test('Schema with inherited properties', () => {
@@ -38,23 +36,22 @@ test('Schema with inherited properties', () => {
 
   schema.data = () => null;
 
-  match(rAssign(schema, {}), { data: null });
+  expect(rAssign(schema, {})).toEqual({ data: null });
 });
 
 test('Schema with object applied', () => {
-  match(
+  expect(
     rAssign(
       {
         data: (value) => value,
       },
       { data: 'data' }
-    ),
-    { data: 'data' }
-  );
+    )
+  ).toEqual({ data: 'data' });
 });
 
 test('Schema with object applied, property skipped', () => {
-  match(
+  expect(
     rAssign(
       {
         data: () => {
@@ -62,26 +59,24 @@ test('Schema with object applied, property skipped', () => {
         },
       },
       { data: 'data' }
-    ),
-    {}
-  );
+    )
+  ).toEqual({});
 });
 
 test('Schema with two objects applied', () => {
-  match(
+  expect(
     rAssign(
       {
         data: (value) => value,
       },
       { data: 'data' },
       { data: 'data2' }
-    ),
-    { data: 'data2' }
-  );
+    )
+  ).toEqual({ data: 'data2' });
 });
 
 test('Schema with two objects applied, property skipped', () => {
-  match(
+  expect(
     rAssign(
       {
         data: () => {
@@ -90,7 +85,6 @@ test('Schema with two objects applied, property skipped', () => {
       },
       { data: 'data' },
       { data: 'data2' }
-    ),
-    {}
-  );
+    )
+  ).toEqual({});
 });
