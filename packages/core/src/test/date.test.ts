@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import {
   anyDate,
   asAnyDate,
@@ -11,47 +10,48 @@ import {
 } from '../lib';
 
 test('asAnyDate', () => {
-  equal(asAnyDate, convertToAnyDate);
+  expect(asAnyDate).toEqual(convertToAnyDate);
 
-  ok(asAnyDate(new Date()) instanceof Date);
-  ok(asAnyDate(new Date().getTime()) instanceof Date);
-  ok(asAnyDate(new Date().toString()) instanceof Date);
+  expect(asAnyDate(new Date()) instanceof Date).toBeTruthy();
+  expect(asAnyDate(new Date().getTime()) instanceof Date).toBeTruthy();
+  expect(asAnyDate(new Date().toString()) instanceof Date).toBeTruthy();
 
-  throws(() => {
+  expect(() => {
     asAnyDate();
-  }, TypeError('Invalid date value'));
+  }).toThrow(TypeError('Invalid date value'));
 });
 
 test('asDate', () => {
-  equal(asDate, convertToDate);
+  expect(asDate).toEqual(convertToDate);
 
-  ok(asDate(new Date()) instanceof Date);
-  ok(asDate(new Date().getTime()) instanceof Date);
-  ok(asDate(new Date().toString()) instanceof Date);
+  expect(asDate(new Date()) instanceof Date).toBeTruthy();
+  expect(asDate(new Date().getTime()) instanceof Date).toBeTruthy();
+  expect(asDate(new Date().toString()) instanceof Date).toBeTruthy();
 
-  throws(() => {
+  expect(() => {
+    // @ts-expect-error - Expect throw
     asDate();
-  }, TypeError('Invalid date value'));
+  }).toThrow(TypeError('Invalid date value'));
 
-  throws(() => {
+  expect(() => {
     asDate(NaN);
-  }, TypeError('Invalid date value'));
+  }).toThrow(TypeError('Invalid date value'));
 });
 
 test('isAnyDate', () => {
-  equal(isAnyDate, anyDate);
+  expect(isAnyDate).toEqual(anyDate);
 
-  ok(isAnyDate(new Date()));
-  ok(isAnyDate(new Date(NaN)));
+  expect(isAnyDate(new Date())).toBeTruthy();
+  expect(isAnyDate(new Date(NaN))).toBeTruthy();
 
-  notOk(isAnyDate(0));
+  expect(isAnyDate(0)).toBeFalsy();
 });
 
 test('isDate', () => {
-  equal(isDate, date);
+  expect(isDate).toEqual(date);
 
-  ok(isDate(new Date()));
+  expect(isDate(new Date())).toBeTruthy();
 
-  notOk(isDate(new Date(NaN)));
-  notOk(isAnyDate(0));
+  expect(isDate(new Date(NaN))).toBeFalsy();
+  expect(isAnyDate(0)).toBeFalsy();
 });

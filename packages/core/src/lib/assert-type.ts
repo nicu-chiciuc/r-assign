@@ -27,7 +27,6 @@ function assertType<T extends TypeGuard>(
       throw TypeError(message);
     }
 
-    // @ts-expect-error TODO: fix this
     throw TypeError(invalidValue(type, value));
   }
 }
