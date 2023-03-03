@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import {
   getLiteral,
   getLiteralOf,
@@ -20,112 +19,116 @@ const receivedStringFalse = 'but received "false"';
 test('getLiteral', () => {
   const getNullLiteral = getLiteral(null);
 
-  equal(getNullLiteral(), null);
-  equal(getNullLiteral(null), null);
-  equal(getNullLiteral(0), null);
+  expect(getNullLiteral()).toEqual(null);
+  expect(getNullLiteral(null)).toEqual(null);
+  expect(getNullLiteral(0)).toEqual(null);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getLiteral({});
-  }, TypeError('Invalid literal provided'));
+  }).toThrow(TypeError('Invalid literal provided'));
 });
 
 test('getLiteralOf', () => {
   const getLiteralAB = getLiteralOf(['a', 'b'], 'a');
 
-  equal(getLiteralAB(), 'a');
-  equal(getLiteralAB('b'), 'b');
-  equal(getLiteralAB(0), 'a');
+  expect(getLiteralAB()).toEqual('a');
+  expect(getLiteralAB('b')).toEqual('b');
+  expect(getLiteralAB(0)).toEqual('a');
 
   const getLiteralBA = getLiteralOf(['a', 'b'], 'b');
 
-  equal(getLiteralBA(), 'b');
-  equal(getLiteralBA('a'), 'a');
-  equal(getLiteralBA(0), 'b');
+  expect(getLiteralBA()).toEqual('b');
+  expect(getLiteralBA('a')).toEqual('a');
+  expect(getLiteralBA(0)).toEqual('b');
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getLiteralOf();
-  }, TypeError('Invalid literals provided'));
+  }).toThrow(TypeError('Invalid literals provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getLiteralOf([{}, {}]);
-  }, TypeError('Invalid literal provided'));
+  }).toThrow(TypeError('Invalid literal provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getLiteralOf(['a', 'b'], null);
-  }, TypeError(`${invalidDefaultValue}, ${expectedLiterals} ${received}`));
+  }).toThrow(
+    TypeError(`${invalidDefaultValue}, ${expectedLiterals} ${received}`)
+  );
 });
 
 test('isLiteral', () => {
-  equal(isLiteral, literal);
+  expect(isLiteral).toEqual(literal);
 
-  ok(isLiteral(null)(null));
-  ok(isLiteral(0n)(0n));
-  ok(isLiteral(false)(false));
-  ok(isLiteral(0)(0));
-  ok(isLiteral('')(''));
-  notOk(isLiteral(0)());
+  expect(isLiteral(null)(null)).toBeTruthy();
+  expect(isLiteral(0n)(0n)).toBeTruthy();
+  expect(isLiteral(false)(false)).toBeTruthy();
+  expect(isLiteral(0)(0)).toBeTruthy();
+  expect(isLiteral('')('')).toBeTruthy();
+  expect(isLiteral(0)()).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isLiteral({});
-  }, TypeError('Invalid literal provided'));
+  }).toThrow(TypeError('Invalid literal provided'));
 
-  throws(() => {
+  expect(() => {
     isLiteral(Infinity);
-  }, TypeError('Invalid literal provided'));
+  }).toThrow(TypeError('Invalid literal provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isLiteral(() => null);
-  }, TypeError('Invalid literal provided'));
+  }).toThrow(TypeError('Invalid literal provided'));
 });
 
 test('isLiteralOf', () => {
-  equal(isLiteralOf, literals);
+  expect(isLiteralOf).toEqual(literals);
 
-  ok(isLiteralOf(['a'])('a'));
-  ok(isLiteralOf(['a', 'b'])('a'));
-  notOk(isLiteralOf(['a', 'b'])(0));
+  expect(isLiteralOf(['a'])('a')).toBeTruthy();
+  expect(isLiteralOf(['a', 'b'])('a')).toBeTruthy();
+  expect(isLiteralOf(['a', 'b'])(0)).toBeFalsy();
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isLiteralOf();
-  }, TypeError('Invalid literals provided'));
+  }).toThrow(TypeError('Invalid literals provided'));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     isLiteralOf([]);
-  }, TypeError('Not enough literals, at least one expected'));
+  }).toThrow(TypeError('Not enough literals, at least one expected'));
 
-  throws(() => {
+  expect(() => {
     isLiteralOf(['a', 'a']);
-  }, TypeError('Duplicate literal provided'));
+  }).toThrow(TypeError('Duplicate literal provided'));
 });
 
 test('parseLiteral', () => {
   const parseLiteralFalse = parseLiteral(false);
 
-  equal(parseLiteralFalse(false), false);
+  expect(parseLiteralFalse(false)).toEqual(false);
 
-  throws(() => {
+  expect(() => {
     parseLiteralFalse(null);
-  }, TypeError(`${invalidValue}, ${expectedFalse} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expectedFalse} ${received}`));
 
-  throws(() => {
+  expect(() => {
     parseLiteralFalse('false');
-  }, TypeError(`${invalidValue}, ${expectedFalse} ${receivedStringFalse}`));
+  }).toThrow(
+    TypeError(`${invalidValue}, ${expectedFalse} ${receivedStringFalse}`)
+  );
 });
 
 test('parseLiteralOf', () => {
   const parseLiteralAB = parseLiteralOf(['a', 'b']);
 
-  equal(parseLiteralAB('a'), 'a');
+  expect(parseLiteralAB('a')).toEqual('a');
 
-  throws(() => {
+  expect(() => {
     parseLiteralAB(null);
-  }, TypeError(`${invalidValue}, ${expectedLiterals} ${received}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expectedLiterals} ${received}`));
 });
