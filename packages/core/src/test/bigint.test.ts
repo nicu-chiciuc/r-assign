@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import { bigint, getBigInt, isBigInt, parseBigInt } from '../lib/bigint';
 
 const expected = 'expected a BigInt value';
@@ -11,53 +10,59 @@ const receivedNumber = 'but received a value of type number';
 test('getBigInt', () => {
   const getBigIntNoDefault = getBigInt();
 
-  equal(getBigIntNoDefault(), 0n);
-  equal(getBigIntNoDefault(0n), 0n);
-  equal(getBigIntNoDefault(1n), 1n);
-  equal(getBigIntNoDefault(0), 0n);
+  expect(getBigIntNoDefault()).toEqual(0n);
+  expect(getBigIntNoDefault(0n)).toEqual(0n);
+  expect(getBigIntNoDefault(1n)).toEqual(1n);
+  expect(getBigIntNoDefault(0)).toEqual(0n);
 
   const getBigIntOne = getBigInt(1n);
 
-  equal(getBigIntOne(), 1n);
-  equal(getBigIntOne(0n), 0n);
-  equal(getBigIntOne(1n), 1n);
-  equal(getBigIntOne(0), 1n);
+  expect(getBigIntOne()).toEqual(1n);
+  expect(getBigIntOne(0n)).toEqual(0n);
+  expect(getBigIntOne(1n)).toEqual(1n);
+  expect(getBigIntOne(0)).toEqual(1n);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getBigInt(null);
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
+  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getBigInt(0);
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNumber}`));
+  }).toThrow(
+    TypeError(`${invalidDefaultValue}, ${expected} ${receivedNumber}`)
+  );
 });
 
 test('isBigInt', () => {
-  equal(isBigInt, bigint);
+  expect(isBigInt).toEqual(bigint);
 
-  notOk(isBigInt());
-  notOk(isBigInt(0));
-  ok(isBigInt(0n));
+  expect(isBigInt()).toBeFalsy();
+  expect(isBigInt(0)).toBeFalsy();
+  expect(isBigInt(0n)).toBeTruthy();
 });
 
 test('parseBigInt', () => {
-  equal(parseBigInt(0n), 0n);
+  expect(parseBigInt(0n)).toEqual(0n);
 
-  throws(() => {
+  expect(() => {
     parseBigInt(null);
-  }, TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
 
-  throws(() => {
+  expect(() => {
     parseBigInt(0);
-  }, TypeError(`${invalidValue}, ${expected} ${receivedNumber}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedNumber}`));
 
-  throws(() => {
+  expect(() => {
     parseBigInt(null, 'key');
-  }, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`));
+  }).toThrow(
+    TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`)
+  );
 
-  throws(() => {
+  expect(() => {
     parseBigInt(0, 'key');
-  }, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNumber}`));
+  }).toThrow(
+    TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNumber}`)
+  );
 });
