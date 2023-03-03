@@ -56,7 +56,7 @@ setTypeGuardMeta(isDate, {
  * Transform number or string values to valid date
  * @deprecated will be removed in version 2.0, use `asDate()` instead
  */
-const convertToDate = (value: unknown): Date => {
+const convertToDate = (value?: unknown): Date => {
   // Check for string or number values
   if (typeof value === 'string' || typeof value === 'number') {
     const date = new Date(value);
