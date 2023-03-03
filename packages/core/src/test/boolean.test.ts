@@ -1,4 +1,3 @@
-import { test, equal, notOk, ok, throws } from 'tap';
 import { boolean, getBoolean, isBoolean, parseBoolean } from '../lib/boolean';
 
 const expected = 'expected a boolean value';
@@ -11,45 +10,47 @@ const receivedNull = 'but received null';
 test('getBoolean', () => {
   const getBooleanNoDefault = getBoolean();
 
-  equal(getBooleanNoDefault(), false);
-  equal(getBooleanNoDefault(false), false);
-  equal(getBooleanNoDefault(true), true);
-  equal(getBooleanNoDefault(null), false);
+  expect(getBooleanNoDefault()).toEqual(false);
+  expect(getBooleanNoDefault(false)).toEqual(false);
+  expect(getBooleanNoDefault(true)).toEqual(true);
+  expect(getBooleanNoDefault(null)).toEqual(false);
 
   const getBooleanTrue = getBoolean(true);
 
-  equal(getBooleanTrue(), true);
-  equal(getBooleanTrue(false), false);
-  equal(getBooleanTrue(true), true);
-  equal(getBooleanTrue(null), true);
+  expect(getBooleanTrue()).toEqual(true);
+  expect(getBooleanTrue(false)).toEqual(false);
+  expect(getBooleanTrue(true)).toEqual(true);
+  expect(getBooleanTrue(null)).toEqual(true);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     getBoolean(null);
-  }, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
+  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
 });
 
 test('isBoolean', () => {
-  equal(isBoolean, boolean);
+  expect(isBoolean).toEqual(boolean);
 
-  notOk(isBoolean());
-  ok(isBoolean(false));
-  ok(isBoolean(true));
+  expect(isBoolean()).toBeFalsy();
+  expect(isBoolean(false)).toBeTruthy();
+  expect(isBoolean(true)).toBeTruthy();
 });
 
 test('parseBoolean', () => {
-  equal(parseBoolean(false), false);
+  expect(parseBoolean(false)).toEqual(false);
 
-  throws(() => {
+  expect(() => {
     // eslint-disable-next-line no-new-wrappers
     parseBoolean(new Boolean());
-  }, TypeError(`${invalidValue}, ${expected} ${receivedBoolean}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedBoolean}`));
 
-  throws(() => {
+  expect(() => {
     parseBoolean(null);
-  }, TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
 
-  throws(() => {
+  expect(() => {
     parseBoolean(null, 'key');
-  }, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`));
+  }).toThrow(
+    TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`)
+  );
 });
