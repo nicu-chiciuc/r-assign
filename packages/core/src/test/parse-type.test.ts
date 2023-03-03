@@ -1,4 +1,3 @@
-import { test, equal, match, notSame, same, throws } from 'tap';
 import {
   isAny,
   isArrayOf,
@@ -27,49 +26,46 @@ const receivedUndefined = 'but received undefined';
 const appendDot = (string: string) => `${string}.`;
 
 test('parseType', () => {
-  equal(parseType(isString)('abc'), 'abc');
-  equal(parseType(isString, appendDot)('abc'), 'abc.');
+  expect(parseType(isString)('abc')).toEqual('abc');
+  expect(parseType(isString, appendDot)('abc')).toEqual('abc.');
 
   const any0 = { unreconized: true };
 
-  same(parseType(isAny)(any0), any0);
+  expect(parseType(isAny)(any0)).toEqual(any0);
 
   const array0: [] = [];
 
-  same(parseType(isArrayOf(isString))(array0), array0);
+  expect(parseType(isArrayOf(isString))(array0)).toEqual(array0);
 
   const array1 = ['a', 'b', 'c'];
 
-  same(parseType(isArrayOf(isString))(array1), array1);
+  expect(parseType(isArrayOf(isString))(array1)).toEqual(array1);
 
   const array2 = ['a', 'b', { value: 'c' }];
 
-  same(
+  expect(
     parseType(
       isArrayOf(isUnionOf([isObjectOf({ value: isString }), isString]))
-    )(array2),
-    array2
-  );
+    )(array2)
+  ).toBe(array2);
 
   const array3 = ['a', 'b', { unreconized: true, value: 'c' }];
 
-  notSame(
+  expect(
     parseType(
       isArrayOf(isUnionOf([isObjectOf({ value: isString }), isString]))
-    )(array3),
-    array3
-  );
+    )(array3)
+  ).not.toBe(array3);
 
-  match(
+  expect(
     parseType(
       isArrayOf(isUnionOf([isObjectOf({ value: isString }), isString]))
-    )(array3),
-    array2
-  );
+    )(array3)
+  ).toEqual(array2);
 
   const object0 = {};
 
-  same(parseType(isObjectOf({}))(object0), object0);
+  expect(parseType(isObjectOf({}))(object0)).toBe(object0);
 
   const object1 = {
     a: 'a',
@@ -77,10 +73,9 @@ test('parseType', () => {
     c: 'c',
   };
 
-  same(
-    parseType(isObjectOf({ a: isString, b: isString, c: isString }))(object1),
-    object1
-  );
+  expect(
+    parseType(isObjectOf({ a: isString, b: isString, c: isString }))(object1)
+  ).toBe(object1);
 
   const object2 = {
     a: 'a',
@@ -89,15 +84,13 @@ test('parseType', () => {
     unrecognized: true,
   };
 
-  notSame(
-    parseType(isObjectOf({ a: isString, b: isString, c: isString }))(object2),
-    object2
-  );
+  expect(
+    parseType(isObjectOf({ a: isString, b: isString, c: isString }))(object2)
+  ).not.toBe(object2);
 
-  match(
-    parseType(isObjectOf({ a: isString, b: isString, c: isString }))(object2),
-    object1
-  );
+  expect(
+    parseType(isObjectOf({ a: isString, b: isString, c: isString }))(object2)
+  ).toEqual(object1);
 
   const object3 = {
     a: 'a',
@@ -105,16 +98,15 @@ test('parseType', () => {
     c: { value: 'c' },
   };
 
-  same(
+  expect(
     parseType(
       isObjectOf({
         a: isString,
         b: isString,
         c: isUnionOf([isObjectOf({ value: isString }), isString]),
       })
-    )(object3),
-    object3
-  );
+    )(object3)
+  ).toBe(object3);
 
   const object4 = {
     a: 'a',
@@ -122,101 +114,95 @@ test('parseType', () => {
     c: { unreconized: true, value: 'c' },
   };
 
-  notSame(
+  expect(
     parseType(
       isObjectOf({
         a: isString,
         b: isString,
         c: isUnionOf([isObjectOf({ value: isString }), isString]),
       })
-    )(object4),
-    object4
-  );
+    )(object4)
+  ).not.toBe(object4);
 
-  match(
+  expect(
     parseType(
       isObjectOf({
         a: isString,
         b: isString,
         c: isUnionOf([isObjectOf({ value: isString }), isString]),
       })
-    )(object4),
-    object3
-  );
+    )(object4)
+  ).toEqual(object3);
 
   const tuple0: [] = [];
 
-  same(parseType(isTupleOf([]))(tuple0), tuple0);
+  expect(parseType(isTupleOf([]))(tuple0)).toBe(tuple0);
 
   const tuple1 = ['a', 'b', 'c'];
 
-  same(parseType(isTupleOf([isString, isString, isString]))(tuple1), tuple1);
+  expect(parseType(isTupleOf([isString, isString, isString]))(tuple1)).toBe(
+    tuple1
+  );
 
   const tuple2 = ['a', 'b', { value: 'c' }];
 
-  same(
+  expect(
     parseType(isTupleOf([isString, isString, isObjectOf({ value: isString })]))(
       tuple2
-    ),
-    tuple2
-  );
+    )
+  ).toBe(tuple2);
 
   const tuple3 = ['a', 'b', { unreconized: true, value: 'c' }];
 
-  notSame(
+  expect(
     parseType(isTupleOf([isString, isString, isObjectOf({ value: isString })]))(
       tuple3
-    ),
-    tuple3
-  );
+    )
+  ).not.toBe(tuple3);
 
-  match(
+  expect(
     parseType(isTupleOf([isString, isString, isObjectOf({ value: isString })]))(
       tuple3
-    ),
-    tuple2
-  );
+    )
+  ).toEqual(tuple2);
 
   const tuple4 = ['a', 'b', 'c', 'd', { value: 'e' }];
 
-  same(
+  expect(
     parseType(
       isTupleOf([
         isString,
         isTupleRestOf(isString),
         isObjectOf({ value: isString }),
       ])
-    )(tuple4),
-    tuple4
-  );
+    )(tuple4)
+  ).toBe(tuple4);
 
   const tuple5 = ['a', 'b', 'c', 'd', { unreconized: true, value: 'e' }];
 
-  notSame(
+  expect(
     parseType(
       isTupleOf([
         isString,
         isTupleRestOf(isString),
         isObjectOf({ value: isString }),
       ])
-    )(tuple5),
-    tuple5
-  );
+    )(tuple5)
+  ).not.toBe(tuple5);
 
-  match(
+  expect(
     parseType(
       isTupleOf([
         isString,
         isTupleRestOf(isString),
         isObjectOf({ value: isString }),
       ])
-    )(tuple5),
-    tuple4
-  );
+    )(tuple5)
+  ).toEqual(tuple4);
 
   const tuple6 = ['a', 'b', 'c', { value: 'd' }, { value: 'e' }];
 
-  same(
+  expect(
     parseType(
       isTupleOf([
         isString,
@@ -224,9 +210,8 @@ test('parseType', () => {
         isObjectOf({ value: isString }),
         isObjectOf({ value: isString }),
       ])
-    )(tuple6),
-    tuple6
-  );
+    )(tuple6)
+  ).toBe(tuple6);
 
   const tuple7 = [
     'a',
@@ -236,7 +221,7 @@ test('parseType', () => {
     { unreconized: true, value: 'e' },
   ];
 
-  notSame(
+  expect(
     parseType(
       isTupleOf([
         isString,
@@ -244,11 +229,10 @@ test('parseType', () => {
         isObjectOf({ value: isString }),
         isObjectOf({ value: isString }),
       ])
-    )(tuple7),
-    tuple7
-  );
+    )(tuple7)
+  ).not.toBe(tuple7);
 
-  match(
+  expect(
     parseType(
       isTupleOf([
         isString,
@@ -256,22 +240,20 @@ test('parseType', () => {
         isObjectOf({ value: isString }),
         isObjectOf({ value: isString }),
       ])
-    )(tuple7),
-    tuple6
-  );
+    )(tuple7)
+  ).toEqual(tuple6);
 
   const tuple8 = ['a', { value: 'b' }, { value: 'c' }, { value: 'd' }, 'e'];
 
-  same(
+  expect(
     parseType(
       isTupleOf([
         isString,
         isTupleRestOf(isObjectOf({ value: isString })),
         isString,
       ])
-    )(tuple8),
-    tuple8
-  );
+    )(tuple8)
+  ).toBe(tuple8);
 
   const tuple9 = [
     'a',
@@ -281,56 +263,58 @@ test('parseType', () => {
     'e',
   ];
 
-  notSame(
+  expect(
     parseType(
       isTupleOf([
         isString,
         isTupleRestOf(isObjectOf({ value: isString })),
         isString,
       ])
-    )(tuple9),
-    tuple9
-  );
+    )(tuple9)
+  ).not.toBe(tuple9);
 
-  match(
+  expect(
     parseType(
       isTupleOf([
         isString,
         isTupleRestOf(isObjectOf({ value: isString })),
         isString,
       ])
-    )(tuple9),
-    tuple8
-  );
+    )(tuple9)
+  ).toEqual(tuple8);
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     parseType();
-  }, TypeError('Invalid type guard provided'));
+  }).toThrow(TypeError('Invalid type guard provided'));
 
-  throws(() => {
+  expect(() => {
     parseType(isString)();
-  }, TypeError(`${invalidValue}, ${expected} ${receivedUndefined}`));
+  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedUndefined}`));
 
-  throws(() => {
+  expect(() => {
     parseType(isString)([]);
-  }, TypeError(`${invalidValue}, ${expected} but received ${emptyArray}`));
+  }).toThrow(
+    TypeError(`${invalidValue}, ${expected} but received ${emptyArray}`)
+  );
 
-  throws(() => {
+  expect(() => {
     parseType(isString)([[]]);
-  }, TypeError(`${invalidValue}, ${expected} but received ${nestedArray}`));
+  }).toThrow(
+    TypeError(`${invalidValue}, ${expected} but received ${nestedArray}`)
+  );
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     parseType(isOptional(isString));
-  }, TypeError('Invalid use of optional type'));
+  }).toThrow(TypeError('Invalid use of optional type'));
 
-  throws(() => {
+  expect(() => {
     parseType(isTemplateLiteralOf(['a-', isString]))('');
-  }, TypeError(`${invalidValue}, ${expectedTL} but received ""`));
+  }).toThrow(TypeError(`${invalidValue}, ${expectedTL} but received ""`));
 
-  throws(() => {
-    // @ts-expect-error
+  expect(() => {
+    // @ts-expect-error - Expect throw
     parseType(isNumber, appendDot)(0);
-  });
+  }).toThrow;
 });

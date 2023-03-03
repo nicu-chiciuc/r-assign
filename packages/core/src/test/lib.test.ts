@@ -1,4 +1,3 @@
-import { test, ok } from 'tap';
 import * as lib from '../lib';
 
 const libKeys = Object.keys(lib);
@@ -125,10 +124,10 @@ const methods = [
 
 test('rAssign lib exports', () => {
   methods.forEach((method) => {
-    ok(method in lib, `Checked key "${method}" is exported`);
+    expect(method in lib).toBe(true);
   });
 
   libKeys.forEach((key) => {
-    ok(methods.includes(key), `Exported key "${key}" is checked`);
+    expect(methods.includes(key)).toBe(true);
   });
 });
