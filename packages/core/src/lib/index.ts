@@ -42,9 +42,7 @@ type InferTypeGuard<G extends TypeGuard> = G extends OptionalTypeGuard<infer T>
 
 type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
 
-type RemapObject<T> = T extends unknown[] | Function
-  ? T
-  : { [K in keyof T]: T[K] };
+type RemapObject<T> = T extends unknown[] ? T : { [K in keyof T]: T[K] };
 
 type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
   ? F extends TypeGuard
@@ -173,9 +171,9 @@ type InferTuple<T extends Tuple> = T extends []
     : never
   : never;
 
-type InferFunction<T extends Tuple, R extends TypeGuard> = ((
+type InferFunction<T extends Tuple, R extends TypeGuard> = (
   ...args: InferTuple<T>
-) => InferTypeGuard<R>) & {};
+) => InferTypeGuard<R>;
 
 type Shape = Record<string, TypeGuard>;
 
@@ -194,7 +192,11 @@ type InferShape<
   M extends TypeGuard<Record<PropertyKey, unknown>> | undefined = undefined
 > = RemapObject<
   OptionalShape<S, KeysOfType<S, OptionalTypeGuard>> &
-    (M extends undefined ? {} : M extends TypeGuard ? InferTypeGuard<M> : never)
+    (M extends undefined
+      ? unknown
+      : M extends TypeGuard
+      ? InferTypeGuard<M>
+      : never)
 >;
 
 type Union = [TypeGuard, TypeGuard, ...TypeGuard[]];
