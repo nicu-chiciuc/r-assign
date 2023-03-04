@@ -4,7 +4,12 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {}
+      "parserOptions": {
+        "project": ["packages/core/tsconfig.*?.json"]
+      },
+      "rules": {
+        "@typescript-eslint/ban-types": "warn"
+      }
     },
     {
       "files": ["*.ts", "*.tsx"],
