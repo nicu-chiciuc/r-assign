@@ -11,11 +11,11 @@ import {
  * Extract values based on provided type guard and default value
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
-function getType<T extends TypeGuard>(
-  type: BaseTypeGuard<T>,
-  initial?: InferTypeGuard<T>,
-  refine?: RefineFunction<InferTypeGuard<T>>
-): TransformFunction<InferTypeGuard<T>> {
+function getType<V>(
+  type: BaseTypeGuard<TypeGuard<V>>,
+  initial?: InferTypeGuard<TypeGuard<V>>,
+  refine?: RefineFunction<InferTypeGuard<TypeGuard<V>>>
+): TransformFunction<InferTypeGuard<TypeGuard<V>>> {
   const meta = getTypeGuardMeta(type);
 
   // Assert for base type guard

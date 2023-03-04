@@ -1,4 +1,4 @@
-type Constructor<T = any> = new (...args: any) => T;
+type Constructor<T = unknown> = new (...args: unknown[]) => T;
 
 type InferConstructor<T extends Constructor> = T extends Constructor<infer I>
   ? I
@@ -16,17 +16,17 @@ type PartialUndefined<T> = {
   [P in keyof T]?: T[P] | undefined;
 };
 
-type TypeGuard<T = any> = ((value?: any) => value is T) & {};
+type TypeGuard<T = any> = (value: unknown) => value is T;
 type CompositeTypeGuard<T> = T extends never ? never : TypeGuard<T>;
 
 type AnyTag = { any: true };
 type AnyTypeGuard = TypeGuard & AnyTag;
 
 type OptionalTag = { optional: true };
-type OptionalTypeGuard<T = any> = TypeGuard<T | undefined> & OptionalTag;
+type OptionalTypeGuard<T = unknown> = TypeGuard<T | undefined> & OptionalTag;
 
 export type RestTag = { rest: true };
-type RestTypeGuard<T = any> = TypeGuard<T[]> & RestTag;
+type RestTypeGuard<T = unknown> = TypeGuard<T[]> & RestTag;
 
 type BaseTypeGuard<T extends TypeGuard> = T extends OptionalTypeGuard
   ? never
@@ -42,7 +42,9 @@ type InferTypeGuard<G extends TypeGuard> = G extends OptionalTypeGuard<infer T>
 
 type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
 
-type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
+type RemapObject<T> = T extends unknown[] | Function
+  ? T
+  : { [K in keyof T]: T[K] };
 
 type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
   ? F extends TypeGuard
@@ -75,7 +77,7 @@ type Stringify<T> = T extends TypeGuard<Literal>
   ? `${T}`
   : never;
 
-type TemplateLiteral<L extends Literal = any> = (TypeGuard<L> | L)[] | [];
+type TemplateLiteral<L extends Literal = Literal> = (TypeGuard<L> | L)[] | [];
 
 type InferTemplateLiteral<T extends TemplateLiteral> = T extends []
   ? ''
@@ -119,7 +121,7 @@ type InferTupleWithRest<T extends Tuple> = T extends []
     : never
   : never;
 
-type TransformFunction<T = any> = (
+type TransformFunction<T = unknown> = (
   value?: unknown,
   key?: string,
   source?: unknown
@@ -185,11 +187,11 @@ type OptionalShape<S extends Shape, T extends keyof S> = {
   [K in keyof (Omit<S, T> & Partial<Pick<S, T>>)]: K extends keyof S
     ? InferTypeGuard<S[K]>
     : never;
-} & {};
+};
 
 type InferShape<
   S extends Shape,
-  M extends TypeGuard<Record<keyof any, any>> | undefined = undefined
+  M extends TypeGuard<Record<PropertyKey, unknown>> | undefined = undefined
 > = RemapObject<
   OptionalShape<S, KeysOfType<S, OptionalTypeGuard>> &
     (M extends undefined ? {} : M extends TypeGuard ? InferTypeGuard<M> : never)
