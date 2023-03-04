@@ -83,3 +83,5 @@ export const rAssign = <S extends TransformSchema<any>>(
 
   return result;
 };
+
+export * from './lib';
