@@ -29,7 +29,6 @@ test('asDate', () => {
   expect(asDate(new Date().toString()) instanceof Date).toBeTruthy();
 
   expect(() => {
-    // @ts-expect-error - Expect throw
     asDate();
   }).toThrow(TypeError('Invalid date value'));
 
