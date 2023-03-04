@@ -1,6 +1,5 @@
 import { TypeGuard } from '.';
-
-const { setTypeGuardMeta } = require('./internal/type-guard-meta');
+import { setTypeGuardMeta } from './internal/type-guard-meta';
 
 const isNever: TypeGuard<never> = (value: unknown): value is never => false;
 

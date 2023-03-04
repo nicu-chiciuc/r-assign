@@ -12,7 +12,7 @@ export const hasAtLeastOneElement = <T>(array: T[]): array is [T, ...T[]] =>
  * @param value
  */
 export function includes<T>(arr: T[], value: unknown): value is T {
-  // @ts-ignore
+  // @ts-expect-error - TS doesn't know that `includes()` is a type guard
   return arr.includes(value);
 }
 

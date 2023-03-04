@@ -41,7 +41,7 @@ setTypeGuardMeta(isNumber, {
  * Extract number values
  * @deprecated will be removed in version 2.0, use `getType()` instead
  */
-function getAnyNumber(initial: number = 0): TransformFunction<number> {
+function getAnyNumber(initial = 0): TransformFunction<number> {
   return getType(isAnyNumber, initial);
 }
 
@@ -49,7 +49,7 @@ function getAnyNumber(initial: number = 0): TransformFunction<number> {
  * Extract finite number values
  * @deprecated will be removed in version 2.0, use `getType()` instead
  */
-function getNumber(initial: number = 0): TransformFunction<number> {
+function getNumber(initial = 0): TransformFunction<number> {
   return getType(isNumber, initial);
 }
 

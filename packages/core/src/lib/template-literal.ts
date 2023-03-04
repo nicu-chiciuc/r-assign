@@ -62,7 +62,7 @@ const canReduceTemplate = <
   S extends string
 >(
   template: T
-  // @ts-expect-error
+  // @ts-expect-error TODO: fix this
 ): template is ReducibleTemplateLiteral<S> =>
   (hasOneElement(template) &&
     typeof template[0] === 'function' &&

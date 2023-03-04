@@ -172,6 +172,7 @@ const isRecordOf = <K extends TypeGuard<keyof any>, V extends TypeGuard>(
   ...args: [K, V] | [V]
 ): TypeGuard<Record<InferTypeGuard<K>, InferTypeGuard<V>>> => {
   // TODO: Fix this
+  // eslint-disable-next-line prefer-const
   let [keys, values]: [any, any] = getRecordArgs(args);
 
   // Validate keys type
