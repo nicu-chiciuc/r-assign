@@ -116,30 +116,4 @@ function isIntersectionOf<I extends Intersection>(
   return check;
 }
 
-/**
- * Extract intersection type values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getIntersectionOf<I extends Intersection>(
-  intersection: I,
-  initial: InferIntersection<I>
-): TransformFunction<InferIntersection<I>> {
-  return getType(isIntersectionOf(intersection), initial);
-}
-
-/**
- * Extract and validate intersection type values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseIntersectionOf<I extends Intersection>(
-  intersection: I
-): TransformFunction<InferIntersection<I>> {
-  return parseType(isIntersectionOf(intersection));
-}
-
-export {
-  getIntersectionOf,
-  isIntersectionOf as intersection,
-  isIntersectionOf,
-  parseIntersectionOf,
-};
+export { isIntersectionOf as intersection, isIntersectionOf };

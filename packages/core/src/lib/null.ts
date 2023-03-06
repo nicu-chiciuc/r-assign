@@ -1,8 +1,5 @@
 import { BaseTypeGuard, InferTypeGuard, TypeGuard } from '.';
-import { TransformFunction } from '.';
-import { getType } from './get-type';
 import { setTypeGuardMeta } from './internal/type-guard-meta';
-import { parseType } from './parse-type';
 import { isUndefined } from './undefined';
 import { isUnionOf } from './union';
 
@@ -40,47 +37,11 @@ function isNullish<T extends TypeGuard>(
   return isUnionOf([type, isNull, isUndefined]);
 }
 
-/**
- * Extract null values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- * @type {TransformFunction<null>}
- */
-const getNull = () => null;
-
-/**
- * Extract nullable values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-const getNullable = <T extends TypeGuard>(
-  type: BaseTypeGuard<T>
-): TransformFunction<InferTypeGuard<T> | null> =>
-  getType(isNullable(type), null);
-
-/**
- * Extract and validate null values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-const parseNull: TransformFunction<null> = parseType(isNull);
-
-/**
- * Extract and validate nullable values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseNullable<T extends TypeGuard>(
-  type: BaseTypeGuard<T>
-): TransformFunction<InferTypeGuard<T> | null> {
-  return parseType(isNullable(type));
-}
-
 export {
-  getNull,
-  getNullable,
   isNull,
   isNullable,
   isNullish,
   isNullable as nullable,
   isNull as nulled,
   isNullish as nullish,
-  parseNull,
-  parseNullable,
 };

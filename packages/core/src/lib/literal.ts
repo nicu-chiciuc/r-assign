@@ -1,6 +1,4 @@
 import { InferLiterals, Literal, Literals, TypeGuard } from '.';
-import { TransformFunction } from '.';
-import { getType } from './get-type';
 import {
   hasAtLeastOneElement,
   hasOneElement,
@@ -8,7 +6,6 @@ import {
 } from './internal/array-checks';
 import { invalidLiteral, invalidLiterals } from './internal/errors';
 import { setTypeGuardMeta } from './internal/type-guard-meta';
-import { parseType } from './parse-type';
 
 const { isArray } = Array;
 const { isFinite } = Number;
@@ -129,50 +126,9 @@ function isLiteralOf<L extends Literal, T extends Literals<L>>(
   return check;
 }
 
-/**
- * Extract literal values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getLiteral<L extends Literal>(literal: L): TransformFunction<L> {
-  return getType(isLiteral(literal), literal);
-}
-
-/**
- * Extract union ofliteralvalues
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getLiteralOf<L extends Literal, T extends Literals<L>>(
-  literals: T,
-  initial: InferLiterals<L, T>
-): TransformFunction<InferLiterals<L, T>> {
-  return getType(isLiteralOf(literals), initial);
-}
-
-/**
- * Extract and validate literal values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseLiteral<L extends Literal>(literal: L): TransformFunction<L> {
-  return parseType(isLiteral(literal));
-}
-
-/**
- * Extract and validae unionof literal values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseLiteralOf<L extends Literal, T extends Literals<L>>(
-  literals: T
-): TransformFunction<InferLiterals<L, T>> {
-  return parseType(isLiteralOf(literals));
-}
-
 export {
-  getLiteral,
-  getLiteralOf,
   isLiteral,
   isLiteralOf,
   isLiteral as literal,
   isLiteralOf as literals,
-  parseLiteral,
-  parseLiteralOf,
 };

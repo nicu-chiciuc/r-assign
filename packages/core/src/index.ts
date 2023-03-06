@@ -13,7 +13,7 @@ type OptionalObject<T> = Omit<T, UndefinedKeys<T>> &
   ? { [K in keyof R]: Exclude<R[K], undefined> }
   : never;
 
-type TransformFunction<T = any> = (
+type TransformFunction<T = unknown> = (
   value?: unknown,
   key?: string,
   source?: unknown
@@ -48,15 +48,11 @@ const invalidSchemaProperty = (key: string): string => {
 
 /**
  * Assign object properties and transform result based on the provided schema
- * @template {TransformSchema<any>} S
- * @param {S} schema
- * @param {Record<string, any>[]} sources
- * @returns {InferType<S>}
  */
-export const rAssign = <S extends TransformSchema<any>>(
-  schema: S,
-  ...sources: Record<string, any>[]
-): InferType<S> => {
+export const rAssign = <S>(
+  schema: TransformSchema<S>,
+  ...sources: Record<string, unknown>[]
+): InferType<TransformSchema<S>> => {
   // Check for valid schema provided
   if (typeof schema !== 'object' || schema === null) {
     throw TypeError(invalidSchema);

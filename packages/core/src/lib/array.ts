@@ -1,12 +1,10 @@
-import { TypeGuard, BaseTypeGuard, InferTypeGuard, TransformFunction } from '.';
-import { getType } from './get-type';
+import { BaseTypeGuard, InferTypeGuard, TypeGuard } from '.';
 import { TypeClassification } from './internal';
 import {
-  getTypeGuardMeta,
   assertBaseTypeGuard,
+  getTypeGuardMeta,
   setTypeGuardMeta,
 } from './internal/type-guard-meta';
-import { parseType } from './parse-type';
 
 const { isArray } = Array;
 
@@ -70,25 +68,4 @@ function isArrayOf<T extends TypeGuard>(
   return check;
 }
 
-/**
- * Extract array values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getArrayOf<T extends TypeGuard>(
-  type: BaseTypeGuard<T>,
-  initial?: InferTypeGuard<BaseTypeGuard<T>>[]
-): TransformFunction<InferTypeGuard<T>[]> {
-  return getType(isArrayOf(type), initial);
-}
-
-/**
- * Extract and validate array values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseArrayOf<T extends TypeGuard>(
-  type: BaseTypeGuard<T>
-): TransformFunction<InferTypeGuard<T>[]> {
-  return parseType(isArrayOf(type));
-}
-
-export { isArrayOf as array, getArrayOf, isArrayOf, parseArrayOf };
+export { isArrayOf as array, isArrayOf };

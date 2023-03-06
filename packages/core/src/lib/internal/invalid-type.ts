@@ -10,7 +10,7 @@ const { entries, getPrototypeOf, keys } = Object;
 /**
  * Get the prototype constructor of the provided value
  */
-const getConstructor = (value: any): Function | null => {
+const getConstructor = (value: unknown): Function | null => {
   const prototype = getPrototypeOf(value);
 
   // Check for available prototype and constructor

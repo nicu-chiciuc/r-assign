@@ -61,7 +61,6 @@ const getOptionalTypeGuard = <T extends TypeGuard>(
 
 /**
  * Wrapper for optional type guards
- * @template {TypeGuard} T
  */
 const wrapOptional = <T extends TypeGuard>(
   type: BaseTypeGuard<T>,

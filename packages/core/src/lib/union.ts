@@ -1,21 +1,18 @@
 import { InferUnion, Literal, TypeGuard, Union } from '.';
-import { TransformFunction } from '.';
 import { isAny } from './any';
-import { getType } from './get-type';
 import {
-  hasOneElement,
   hasAtLeastTwoElements,
+  hasOneElement,
   hasTwoElements,
 } from './internal/array-checks';
 import { invalidOptionalType } from './internal/invalid-type';
 import {
   getTypeGuardMeta,
-  isStringTypeGuard,
   isAnyTypeGuard,
+  isStringTypeGuard,
   setTypeGuardMeta,
 } from './internal/type-guard-meta';
-import { isLiteralOf, isLiteral } from './literal';
-import { parseType } from './parse-type';
+import { isLiteral, isLiteralOf } from './literal';
 
 const { isArray } = Array;
 const { values } = Object;
@@ -238,21 +235,4 @@ const isUnionOf = <U extends Union>(types: U): TypeGuard<InferUnion<U>> => {
   return check;
 };
 
-/**
- * Extract union type values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-const getUnionOf = <U extends Union>(
-  union: U,
-  initial: InferUnion<U>
-): TransformFunction<InferUnion<U>> => getType(isUnionOf(union), initial);
-
-/**
- * Extract and validate union type values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-const parseUnionOf = <U extends Union>(
-  union: U
-): TransformFunction<InferUnion<U>> => parseType(isUnionOf(union));
-
-export { getUnionOf, isUnionOf, parseUnionOf, isUnionOf as union };
+export { isUnionOf, isUnionOf as union };

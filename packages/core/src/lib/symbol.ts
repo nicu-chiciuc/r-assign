@@ -18,17 +18,4 @@ setTypeGuardMeta(isSymbol, {
   primitive: 'symbol',
 });
 
-/**
- * Extract symbol values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-const getSymbol = (initial = Symbol()): TransformFunction<symbol> =>
-  getType(isSymbol, initial);
-
-/**
- * Extract and validate symbol values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-const parseSymbol: TransformFunction<symbol> = parseType(isSymbol);
-
-export { getSymbol, isSymbol, parseSymbol, isSymbol as symbol };
+export { isSymbol, isSymbol as symbol };

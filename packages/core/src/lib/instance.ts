@@ -1,13 +1,4 @@
-'use strict';
-
-import {
-  Constructor,
-  TypeGuard,
-  InferConstructor,
-  getType,
-  parseType,
-} from '.';
-import { TransformFunction } from '.';
+import { Constructor, InferConstructor, TypeGuard } from '.';
 import { invalidConstructor } from './internal/errors';
 import { setTypeGuardMeta } from './internal/type-guard-meta';
 
@@ -37,30 +28,4 @@ function isInstanceOf<C extends Constructor>(
   return check;
 }
 
-/**
- * Extract instance values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getInstanceOf<C extends Constructor>(
-  instance: C,
-  initial: InferConstructor<C>
-): TransformFunction<InferConstructor<C>> {
-  return getType(isInstanceOf(instance), initial);
-}
-
-/**
- * Extract and validate instance values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseInstanceOf<C extends Constructor>(
-  instance: C
-): TransformFunction<InferConstructor<C>> {
-  return parseType(isInstanceOf(instance));
-}
-
-export {
-  getInstanceOf,
-  isInstanceOf as instance,
-  isInstanceOf,
-  parseInstanceOf,
-};
+export { isInstanceOf as instance, isInstanceOf };

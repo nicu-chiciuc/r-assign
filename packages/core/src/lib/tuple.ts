@@ -241,32 +241,9 @@ function isTupleRestOf<T extends TypeGuard>(
   return check;
 }
 
-/**
- * Extract tuple values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getTupleOf<T extends Tuple>(
-  tuple: T,
-  initial: InferTuple<T>
-): TransformFunction<InferTuple<T>> {
-  return getType(isTupleOf(tuple), initial);
-}
-
-/**
- * Extract and validate tuple values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseTupleOf<T extends Tuple>(
-  tuple: T
-): TransformFunction<InferTuple<T>> {
-  return parseType(isTupleOf(tuple));
-}
-
 export {
-  getTupleOf,
   isTupleOf,
   isTupleRestOf,
-  parseTupleOf,
   isTupleOf as tuple,
   isTupleRestOf as tupleRest,
 };

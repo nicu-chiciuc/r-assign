@@ -19,19 +19,4 @@ setTypeGuardMeta(isAny, {
   description: 'any value',
 });
 
-/**
- * Extract any values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getAny(value?: unknown, key?: string, source?: unknown): any {
-  return value;
-}
-
-/**
- * Extract and validate any values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- * @type {TransformFunction}
- */
-const parseAny = getAny;
-
-export { isAny as any, getAny, isAny, parseAny };
+export { isAny as any, isAny };

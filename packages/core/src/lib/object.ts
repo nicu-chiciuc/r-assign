@@ -1,13 +1,10 @@
 import { InferShape, Shape, TypeGuard } from '.';
-import { TransformFunction } from '.';
-import { getType } from './get-type';
 import { ObjectTypeGuardMeta } from './internal';
 import { hasAtLeastOneElement } from './internal/array-checks';
 import { invalidShape } from './internal/errors';
 import { getTypeGuardMeta, setTypeGuardMeta } from './internal/type-guard-meta';
 import { isLiteralOf } from './literal';
 import { isNever } from './never';
-import { parseType } from './parse-type';
 
 const { isArray } = Array;
 const { entries, fromEntries, keys } = Object;
@@ -347,51 +344,7 @@ function isStrictObjectOf<S extends Shape>(shape: S): TypeGuard<InferShape<S>> {
   return check;
 }
 
-/**
- * Extract object values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getObjectOf<S extends Shape>(
-  shape: S,
-  initial: InferShape<S>
-): TransformFunction<InferShape<S>> {
-  return getType(isObjectOf(shape), initial);
-}
-
-/**
- * Extract strict object values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getStrictObjectOf<S extends Shape>(
-  shape: S,
-  initial: InferShape<S>
-): TransformFunction<InferShape<S>> {
-  return getType(isStrictObjectOf(shape), initial);
-}
-
-/**
- * Extract and validate object values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseObjectOf<S extends Shape>(
-  shape: S
-): TransformFunction<InferShape<S>> {
-  return parseType(isObjectOf(shape));
-}
-
-/**
- * Extract and validate strict object values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-function parseStrictObjectOf<S extends Shape>(
-  shape: S
-): TransformFunction<InferShape<S>> {
-  return parseType(isStrictObjectOf(shape));
-}
-
 export {
-  getObjectOf,
-  getStrictObjectOf,
   isKeyOf,
   isObjectOf,
   isOmitFrom,
@@ -400,8 +353,6 @@ export {
   isKeyOf as keyof,
   isObjectOf as object,
   isOmitFrom as omit,
-  parseObjectOf,
-  parseStrictObjectOf,
   isPickFrom as pick,
   isStrictObjectOf as strictObject,
 };

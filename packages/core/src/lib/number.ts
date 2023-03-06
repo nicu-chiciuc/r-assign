@@ -1,8 +1,5 @@
 import { TypeGuard } from '.';
-import { TransformFunction } from '.';
-import { getType } from './get-type';
 import { setTypeGuardMeta } from './internal/type-guard-meta';
-import { parseType } from './parse-type';
 
 const { isFinite } = Number;
 
@@ -37,41 +34,4 @@ setTypeGuardMeta(isNumber, {
   primitive: 'number',
 });
 
-/**
- * Extract number values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getAnyNumber(initial = 0): TransformFunction<number> {
-  return getType(isAnyNumber, initial);
-}
-
-/**
- * Extract finite number values
- * @deprecated will be removed in version 2.0, use `getType()` instead
- */
-function getNumber(initial = 0): TransformFunction<number> {
-  return getType(isNumber, initial);
-}
-
-/**
- * Extract and validate number values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-const parseAnyNumber: TransformFunction<number> = parseType(isAnyNumber);
-
-/**
- * Extract and validate finite number values
- * @deprecated will be removed in version 2.0, use `parseType()` instead
- */
-const parseNumber: TransformFunction<number> = parseType(isNumber);
-
-export {
-  isAnyNumber as anyNumber,
-  getAnyNumber,
-  getNumber,
-  isAnyNumber,
-  isNumber,
-  isNumber as number,
-  parseAnyNumber,
-  parseNumber,
-};
+export { isAnyNumber as anyNumber, isAnyNumber, isNumber, isNumber as number };
