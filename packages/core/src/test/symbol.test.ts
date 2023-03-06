@@ -4,6 +4,6 @@ test('isSymbol', () => {
   expect(isSymbol).toEqual(symbol);
 
   // @ts-expect-error - Expect 1 argument
-  expect(isSymbol()).toBeFalsy();
-  expect(isSymbol(Symbol())).toBeTruthy();
+  expect(isSymbol()).toBe(false);
+  expect(isSymbol(Symbol())).toBe(true);
 });

@@ -4,6 +4,6 @@ test('isUndefined', () => {
   expect(isUndefined).toBe(undef);
 
   // @ts-expect-error - Expect 1 argument
-  expect(isUndefined()).toBeTruthy();
-  expect(isUndefined(null)).toBeFalsy();
+  expect(isUndefined()).toBe(true);
+  expect(isUndefined(null)).toBe(false);
 });

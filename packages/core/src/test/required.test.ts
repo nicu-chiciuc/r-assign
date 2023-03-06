@@ -15,101 +15,101 @@ test('isRequired', () => {
 
   expect(
     isRequired(isObjectOf({ a: isOptional(isString) }))({ a: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRequired(isObjectOf({ a: isOptional(isString) }))({ a: undefined })
-  ).toBeFalsy();
-  expect(isRequired(isObjectOf({ a: isOptional(isString) }))({})).toBeFalsy();
+  ).toBe(false);
+  expect(isRequired(isObjectOf({ a: isOptional(isString) }))({})).toBe(false);
 
   expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({
       a: 'abc',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({
       a: 'abc',
       b: 'def',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({
       a: undefined,
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isRequired(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))(
       {}
     )
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(
     isRequired(isObjectOf({ a: isOptionalUndefined(isString) }))({
       a: 'abc',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRequired(isObjectOf({ a: isOptionalUndefined(isString) }))({
       a: undefined,
     })
-  ).toBeFalsy();
-  expect(isRequired(isObjectOf({ a: isString }))({})).toBeFalsy();
+  ).toBe(false);
+  expect(isRequired(isObjectOf({ a: isString }))({})).toBe(false);
 
-  expect(isRequired(isObjectOf({ a: isString }))({ a: 'abc' })).toBeTruthy();
-  expect(isRequired(isObjectOf({ a: isString }))({ a: undefined })).toBeFalsy();
-  expect(isRequired(isObjectOf({ a: isString }))({})).toBeFalsy();
+  expect(isRequired(isObjectOf({ a: isString }))({ a: 'abc' })).toBe(true);
+  expect(isRequired(isObjectOf({ a: isString }))({ a: undefined })).toBe(false);
+  expect(isRequired(isObjectOf({ a: isString }))({})).toBe(false);
 
   expect(
     isRequired(isStrictObjectOf({ a: isOptional(isString) }))({ a: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRequired(isStrictObjectOf({ a: isOptional(isString) }))({
       a: undefined,
     })
-  ).toBeFalsy();
-  expect(
-    isRequired(isStrictObjectOf({ a: isOptional(isString) }))({})
-  ).toBeFalsy();
+  ).toBe(false);
+  expect(isRequired(isStrictObjectOf({ a: isOptional(isString) }))({})).toBe(
+    false
+  );
 
   expect(
     isRequired(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({
       a: 'abc',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRequired(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({
       a: undefined,
     })
-  ).toBeFalsy();
-  expect(isRequired(isStrictObjectOf({ a: isString }))({})).toBeFalsy();
+  ).toBe(false);
+  expect(isRequired(isStrictObjectOf({ a: isString }))({})).toBe(false);
 
-  expect(
-    isRequired(isStrictObjectOf({ a: isString }))({ a: 'abc' })
-  ).toBeTruthy();
-  expect(
-    isRequired(isStrictObjectOf({ a: isString }))({ a: undefined })
-  ).toBeFalsy();
-  expect(isRequired(isStrictObjectOf({ a: isString }))({})).toBeFalsy();
+  expect(isRequired(isStrictObjectOf({ a: isString }))({ a: 'abc' })).toBe(
+    true
+  );
+  expect(isRequired(isStrictObjectOf({ a: isString }))({ a: undefined })).toBe(
+    false
+  );
+  expect(isRequired(isStrictObjectOf({ a: isString }))({})).toBe(false);
 
-  expect(isRequired(isTupleOf([isOptional(isString)]))(['abc'])).toBeTruthy();
-  expect(
-    isRequired(isTupleOf([isOptional(isString)]))([undefined])
-  ).toBeFalsy();
-  expect(isRequired(isTupleOf([isOptional(isString)]))([])).toBeFalsy();
+  expect(isRequired(isTupleOf([isOptional(isString)]))(['abc'])).toBe(true);
+  expect(isRequired(isTupleOf([isOptional(isString)]))([undefined])).toBe(
+    false
+  );
+  expect(isRequired(isTupleOf([isOptional(isString)]))([])).toBe(false);
 
-  expect(
-    isRequired(isTupleOf([isOptionalUndefined(isString)]))(['abc'])
-  ).toBeTruthy();
+  expect(isRequired(isTupleOf([isOptionalUndefined(isString)]))(['abc'])).toBe(
+    true
+  );
   expect(
     isRequired(isTupleOf([isOptionalUndefined(isString)]))([undefined])
-  ).toBeFalsy();
-  expect(
-    isRequired(isTupleOf([isOptionalUndefined(isString)]))([])
-  ).toBeFalsy();
+  ).toBe(false);
+  expect(isRequired(isTupleOf([isOptionalUndefined(isString)]))([])).toBe(
+    false
+  );
 
-  expect(isRequired(isTupleOf([isString]))(['abc'])).toBeTruthy();
-  expect(isRequired(isTupleOf([isString]))([undefined])).toBeFalsy();
-  expect(isRequired(isTupleOf([isString]))([])).toBeFalsy();
+  expect(isRequired(isTupleOf([isString]))(['abc'])).toBe(true);
+  expect(isRequired(isTupleOf([isString]))([undefined])).toBe(false);
+  expect(isRequired(isTupleOf([isString]))([])).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw

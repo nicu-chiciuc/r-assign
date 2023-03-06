@@ -9,7 +9,7 @@ import {
 } from '../lib';
 
 test('isIntersectionOf', () => {
-  expect(isIntersectionOf([isBoolean, isNumber, isAny])('')).toBeTruthy();
+  expect(isIntersectionOf([isBoolean, isNumber, isAny])('')).toBe(true);
 
   expect(
     isIntersectionOf([
@@ -20,7 +20,7 @@ test('isIntersectionOf', () => {
         string: isString,
       }),
     ])({ number: 0, string: '' })
-  ).toBeTruthy();
+  ).toBe(true);
 
   expect(
     isIntersectionOf([
@@ -34,7 +34,7 @@ test('isIntersectionOf', () => {
         string: isString,
       }),
     ])({ boolean: false, number: 0, string: '' })
-  ).toBeTruthy();
+  ).toBe(true);
 
   expect(
     isIntersectionOf([
@@ -48,7 +48,7 @@ test('isIntersectionOf', () => {
         string: isString,
       }),
     ])({ boolean: false, number: 0 })
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw

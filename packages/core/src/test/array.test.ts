@@ -14,19 +14,19 @@ test('isArrayOf', () => {
 
   expect(isArrayOf).toBe(array);
 
-  expect(isArrayOf(isBoolean)([])).toBeTruthy();
-  expect(isArrayOf(isBoolean)([true])).toBeTruthy();
-  expect(isArrayOf(isBoolean)(sparseArray)).toBeFalsy();
+  expect(array(isBoolean)([])).toBe(true);
+  expect(array(isBoolean)([true])).toBe(true);
+  expect(array(isBoolean)(sparseArray)).toBe(false);
   // @ts-expect-error - Expects 1 argument
-  expect(isArrayOf(isBoolean)()).toBeFalsy();
+  expect(array(isBoolean)()).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Test that it throws
-    isArrayOf();
+    array();
   }).toThrow(TypeError(invalidTypeGuard));
 
   expect(() => {
     // @ts-expect-error - Test that it throws
-    isArrayOf(isOptional(isString));
+    array(isOptional(isString));
   }).toThrow(TypeError(invalidOptionalType));
 });

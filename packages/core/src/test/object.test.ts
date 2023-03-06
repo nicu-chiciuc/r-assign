@@ -24,9 +24,9 @@ const invalidShape = 'Invalid shape provided';
 test('isKeyOf', () => {
   expect(isKeyOf).toEqual(keyof);
 
-  expect(isKeyOf(isObjectOf({ abc: isString }))('abc')).toBeTruthy();
-  expect(isKeyOf(isObjectOf({ abc: isString }))('def')).toBeFalsy();
-  expect(isKeyOf(isObjectOf({}))('abc')).toBeFalsy();
+  expect(isKeyOf(isObjectOf({ abc: isString }))('abc')).toBe(true);
+  expect(isKeyOf(isObjectOf({ abc: isString }))('def')).toBe(false);
+  expect(isKeyOf(isObjectOf({}))('abc')).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -37,28 +37,26 @@ test('isKeyOf', () => {
 test('isObjectOf', () => {
   expect(isObjectOf).toEqual(object);
 
-  expect(isObjectOf({})({})).toBeTruthy();
-  expect(isObjectOf({ a: isString })({ a: 'abc' })).toBeTruthy();
-  expect(isObjectOf({ a: isString })({ a: 'abc', b: 'def' })).toBeTruthy();
-  expect(isObjectOf({ a: isOptional(isString) })({ a: 'abc' })).toBeTruthy();
-  expect(isObjectOf({ a: isOptional(isString) })({})).toBeTruthy();
-  expect(isObjectOf({ a: isOptional(isString) })({ a: undefined })).toBeFalsy();
+  expect(isObjectOf({})({})).toBe(true);
+  expect(isObjectOf({ a: isString })({ a: 'abc' })).toBe(true);
+  expect(isObjectOf({ a: isString })({ a: 'abc', b: 'def' })).toBe(true);
+  expect(isObjectOf({ a: isOptional(isString) })({ a: 'abc' })).toBe(true);
+  expect(isObjectOf({ a: isOptional(isString) })({})).toBe(true);
+  expect(isObjectOf({ a: isOptional(isString) })({ a: undefined })).toBe(false);
 
-  expect(
-    isObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' })
-  ).toBeTruthy();
+  expect(isObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' })).toBe(
+    true
+  );
   expect(
     isObjectOf({ a: isOptionalUndefined(isString) })({ a: undefined })
-  ).toBeTruthy();
-  expect(isObjectOf({ a: isOptionalUndefined(isString) })({})).toBeTruthy();
-  expect(
-    isObjectOf({ a: isOptionalUndefined(isString) })({ a: null })
-  ).toBeFalsy();
+  ).toBe(true);
+  expect(isObjectOf({ a: isOptionalUndefined(isString) })({})).toBe(true);
+  expect(isObjectOf({ a: isOptionalUndefined(isString) })({ a: null })).toBe(
+    false
+  );
 
-  expect(isObjectOf({}, isRecordOf(isString, isString))({})).toBeTruthy();
-  expect(
-    isObjectOf({}, isRecordOf(isString, isString))({ a: 'a' })
-  ).toBeTruthy();
+  expect(isObjectOf({}, isRecordOf(isString, isString))({})).toBe(true);
+  expect(isObjectOf({}, isRecordOf(isString, isString))({ a: 'a' })).toBe(true);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -95,7 +93,7 @@ test('isOmitFrom', () => {
       def: 'def',
       ghi: 'ghi',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isOmitFrom(
       isObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -104,7 +102,7 @@ test('isOmitFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -113,7 +111,7 @@ test('isOmitFrom', () => {
       def: 'def',
       ghi: 'ghi',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -122,7 +120,7 @@ test('isOmitFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(
     isOmitFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
@@ -131,7 +129,7 @@ test('isOmitFrom', () => {
     ])({
       ghi: 'ghi',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isOmitFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
       'abc',
@@ -139,7 +137,7 @@ test('isOmitFrom', () => {
     ])({
       abc: 'abc',
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -147,7 +145,7 @@ test('isOmitFrom', () => {
     )({
       ghi: 'ghi',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isOmitFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -155,7 +153,7 @@ test('isOmitFrom', () => {
     )({
       abc: 'abc',
     })
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -183,7 +181,7 @@ test('isPickFrom', () => {
     )({
       abc: 'abc',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPickFrom(
       isObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -191,7 +189,7 @@ test('isPickFrom', () => {
     )({
       def: 'def',
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -199,7 +197,7 @@ test('isPickFrom', () => {
     )({
       abc: 'abc',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -207,7 +205,7 @@ test('isPickFrom', () => {
     )({
       def: 'def',
     })
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(
     isPickFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
@@ -217,7 +215,7 @@ test('isPickFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPickFrom(isObjectOf({ abc: isString, def: isString, ghi: isString }), [
       'abc',
@@ -225,7 +223,7 @@ test('isPickFrom', () => {
     ])({
       abc: 'abc',
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -234,7 +232,7 @@ test('isPickFrom', () => {
       abc: 'abc',
       def: 'def',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPickFrom(
       isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
@@ -242,7 +240,7 @@ test('isPickFrom', () => {
     )({
       abc: 'abc',
     })
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -263,29 +261,27 @@ test('isPickFrom', () => {
 test('isStrictObjectOf', () => {
   expect(isStrictObjectOf).toEqual(strictObject);
 
-  expect(isStrictObjectOf({ a: isString })({ a: 'abc' })).toBeTruthy();
-  expect(
-    isStrictObjectOf({ a: isOptional(isString) })({ a: 'abc' })
-  ).toBeTruthy();
-  expect(isStrictObjectOf({ a: isOptional(isString) })({})).toBeTruthy();
+  expect(isStrictObjectOf({ a: isString })({ a: 'abc' })).toBe(true);
+  expect(isStrictObjectOf({ a: isOptional(isString) })({ a: 'abc' })).toBe(
+    true
+  );
+  expect(isStrictObjectOf({ a: isOptional(isString) })({})).toBe(true);
   expect(
     isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isStrictObjectOf({ a: isOptionalUndefined(isString) })({
       a: undefined,
     })
-  ).toBeTruthy();
-  expect(
-    isStrictObjectOf({ a: isOptionalUndefined(isString) })({})
-  ).toBeTruthy();
-  expect(isStrictObjectOf({ a: isString })({ a: 'abc', b: 'def' })).toBeFalsy();
-  expect(
-    isStrictObjectOf({ a: isOptional(isString) })({ a: undefined })
-  ).toBeFalsy();
+  ).toBe(true);
+  expect(isStrictObjectOf({ a: isOptionalUndefined(isString) })({})).toBe(true);
+  expect(isStrictObjectOf({ a: isString })({ a: 'abc', b: 'def' })).toBe(false);
+  expect(isStrictObjectOf({ a: isOptional(isString) })({ a: undefined })).toBe(
+    false
+  );
   expect(
     isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: null })
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw

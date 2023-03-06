@@ -4,20 +4,20 @@ test('isAnyNumber', () => {
   expect(isAnyNumber).toEqual(anyNumber);
 
   // @ts-expect-error - Expect 1 argument
-  expect(isAnyNumber()).toBeFalsy();
-  expect(isAnyNumber(NaN)).toBeTruthy();
-  expect(isAnyNumber(Infinity)).toBeTruthy();
-  expect(isAnyNumber(-Infinity)).toBeTruthy();
-  expect(isNumber(0)).toBeTruthy();
+  expect(isAnyNumber()).toBe(false);
+  expect(isAnyNumber(NaN)).toBe(true);
+  expect(isAnyNumber(Infinity)).toBe(true);
+  expect(isAnyNumber(-Infinity)).toBe(true);
+  expect(isNumber(0)).toBe(true);
 });
 
 test('isNumber', () => {
   expect(isNumber).toEqual(number);
 
   // @ts-expect-error - Expect 1 argument
-  expect(isNumber()).toBeFalsy();
-  expect(isNumber(NaN)).toBeFalsy();
-  expect(isNumber(Infinity)).toBeFalsy();
-  expect(isNumber(-Infinity)).toBeFalsy();
-  expect(isNumber(0)).toBeTruthy();
+  expect(isNumber()).toBe(false);
+  expect(isNumber(NaN)).toBe(false);
+  expect(isNumber(Infinity)).toBe(false);
+  expect(isNumber(-Infinity)).toBe(false);
+  expect(isNumber(0)).toBe(true);
 });

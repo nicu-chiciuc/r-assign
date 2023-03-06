@@ -20,36 +20,32 @@ const invalidValue = 'Invalid value type';
 test('isUnionOf', () => {
   expect(isUnionOf).toEqual(union);
 
-  expect(isUnionOf([isBoolean, isNumber, isAny])('')).toBeTruthy();
-  expect(isUnionOf([isBoolean, isNumber])(true)).toBeTruthy();
-  expect(isUnionOf([isBoolean, isNumber])(0)).toBeTruthy();
-  expect(isUnionOf([isLiteral('a'), isString])('')).toBeTruthy();
-  expect(
-    isUnionOf([isLiteral('a'), isLiteralOf(['a', 'b'])])('a')
-  ).toBeTruthy();
-  expect(isUnionOf([isLiteralOf(['a', 0, 1]), isString])('a')).toBeTruthy();
-  expect(isUnionOf([isLiteralOf(['a', 0]), isString])('a')).toBeTruthy();
-  expect(
-    isUnionOf([isTemplateLiteralOf([isNumber]), isString])('')
-  ).toBeTruthy();
+  expect(isUnionOf([isBoolean, isNumber, isAny])('')).toBe(true);
+  expect(isUnionOf([isBoolean, isNumber])(true)).toBe(true);
+  expect(isUnionOf([isBoolean, isNumber])(0)).toBe(true);
+  expect(isUnionOf([isLiteral('a'), isString])('')).toBe(true);
+  expect(isUnionOf([isLiteral('a'), isLiteralOf(['a', 'b'])])('a')).toBe(true);
+  expect(isUnionOf([isLiteralOf(['a', 0, 1]), isString])('a')).toBe(true);
+  expect(isUnionOf([isLiteralOf(['a', 0]), isString])('a')).toBe(true);
+  expect(isUnionOf([isTemplateLiteralOf([isNumber]), isString])('')).toBe(true);
 
   // TODO: add a check for equivalent types
-  expect(
-    isUnionOf([isArrayOf(isBoolean), isArrayOf(isBoolean)])([true])
-  ).toBeTruthy();
+  expect(isUnionOf([isArrayOf(isBoolean), isArrayOf(isBoolean)])([true])).toBe(
+    true
+  );
 
-  expect(isUnionOf([isBoolean, isNumber])('')).toBeFalsy();
+  expect(isUnionOf([isBoolean, isNumber])('')).toBe(false);
 
   const isBooleanOrNumberOrString = isUnionOf([
     isBoolean,
     isUnionOf([isNumber, isString]),
   ]);
 
-  expect(isBooleanOrNumberOrString(true)).toBeTruthy();
-  expect(isBooleanOrNumberOrString(0)).toBeTruthy();
-  expect(isBooleanOrNumberOrString('')).toBeTruthy();
+  expect(isBooleanOrNumberOrString(true)).toBe(true);
+  expect(isBooleanOrNumberOrString(0)).toBe(true);
+  expect(isBooleanOrNumberOrString('')).toBe(true);
   // @ts-expect-error - Expect 1 argument
-  expect(isBooleanOrNumberOrString()).toBeFalsy();
+  expect(isBooleanOrNumberOrString()).toBe(false);
 
   expect(isUnionOf([isBoolean, isBoolean])).toEqual(isBoolean);
 

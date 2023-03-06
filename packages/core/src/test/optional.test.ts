@@ -11,10 +11,10 @@ test('isOptional', () => {
 
   expect(isOptional).toEqual(optional);
 
-  expect(isOptionalString('')).toBeTruthy();
+  expect(isOptionalString('')).toBe(true);
   // @ts-expect-error - Expect 1 argument
-  expect(isOptionalString()).toBeFalsy();
-  expect(isOptionalString(null)).toBeFalsy();
+  expect(isOptionalString()).toBe(false);
+  expect(isOptionalString(null)).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -33,9 +33,9 @@ test('isOptionalUndefined', () => {
   expect(isOptionalUndefined).toEqual(optionalUndef);
 
   // @ts-expect-error - Expect 1 argument
-  expect(isOptionalString()).toBeTruthy();
-  expect(isOptionalString('')).toBeTruthy();
-  expect(isOptionalString(null)).toBeFalsy();
+  expect(isOptionalString()).toBe(true);
+  expect(isOptionalString('')).toBe(true);
+  expect(isOptionalString(null)).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw

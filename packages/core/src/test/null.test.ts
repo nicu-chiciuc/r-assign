@@ -12,10 +12,10 @@ import {
 test('isNull', () => {
   expect(isNull).toEqual(nulled);
 
-  expect(isNull(null)).toBeTruthy();
+  expect(isNull(null)).toBe(true);
 
   // @ts-expect-error - Expects 1 argument
-  expect(isNull()).toBeFalsy();
+  expect(isNull()).toBe(false);
 });
 
 test('isNullable', () => {
@@ -23,11 +23,11 @@ test('isNullable', () => {
 
   expect(isNullable).toEqual(nullable);
 
-  expect(isNullableString(null)).toBeTruthy();
-  expect(isNullableString('')).toBeTruthy();
+  expect(isNullableString(null)).toBe(true);
+  expect(isNullableString('')).toBe(true);
 
   // @ts-expect-error - Expects 1 argument
-  expect(isNullableString()).toBeFalsy();
+  expect(isNullableString()).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Throws
@@ -45,11 +45,11 @@ test('isNullish', () => {
 
   expect(isNullish).toEqual(nullish);
 
-  expect(isNullishString(null)).toBeTruthy();
+  expect(isNullishString(null)).toBe(true);
   // @ts-expect-error - Expects 1 argument
-  expect(isNullishString()).toBeTruthy();
-  expect(isNullishString('')).toBeTruthy();
-  expect(isNullishString(true)).toBeFalsy();
+  expect(isNullishString()).toBe(true);
+  expect(isNullishString('')).toBe(true);
+  expect(isNullishString(true)).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Throws

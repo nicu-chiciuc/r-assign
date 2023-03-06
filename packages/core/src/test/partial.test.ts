@@ -16,95 +16,91 @@ import {
 test('isPartial', () => {
   expect(isPartial).toEqual(partial);
 
-  expect(isPartial(isArrayOf(isString))(['abc'])).toBeTruthy();
-  expect(isPartial(isArrayOf(isString))([undefined])).toBeTruthy();
-  expect(isPartial(isArrayOf(isString))([])).toBeTruthy();
-  expect(isPartial(isArrayOf(isString))([1])).toBeFalsy();
+  expect(isPartial(isArrayOf(isString))(['abc'])).toBe(true);
+  expect(isPartial(isArrayOf(isString))([undefined])).toBe(true);
+  expect(isPartial(isArrayOf(isString))([])).toBe(true);
+  expect(isPartial(isArrayOf(isString))([1])).toBe(false);
 
-  expect(isPartial(isObjectOf({ a: isString }))({})).toBeTruthy();
-  expect(isPartial(isObjectOf({ a: isOptional(isString) }))({})).toBeTruthy();
-  expect(
-    isPartial(isObjectOf({ a: isOptionalUndefined(isString) }))({})
-  ).toBeTruthy();
-  expect(isPartial(isObjectOf({ a: isString }))({ a: 'abc' })).toBeTruthy();
-  expect(
-    isPartial(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' })
-  ).toBeTruthy();
-  expect(isPartial(isObjectOf({ a: isString }))({ b: 'def' })).toBeTruthy();
-  expect(isPartial(isObjectOf({ a: isString }))({ a: undefined })).toBeFalsy();
+  expect(isPartial(isObjectOf({ a: isString }))({})).toBe(true);
+  expect(isPartial(isObjectOf({ a: isOptional(isString) }))({})).toBe(true);
+  expect(isPartial(isObjectOf({ a: isOptionalUndefined(isString) }))({})).toBe(
+    true
+  );
+  expect(isPartial(isObjectOf({ a: isString }))({ a: 'abc' })).toBe(true);
+  expect(isPartial(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' })).toBe(
+    true
+  );
+  expect(isPartial(isObjectOf({ a: isString }))({ b: 'def' })).toBe(true);
+  expect(isPartial(isObjectOf({ a: isString }))({ a: undefined })).toBe(false);
 
-  expect(
-    isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({})
-  ).toBeTruthy();
+  expect(isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({})).toBe(
+    true
+  );
   expect(
     isPartial(isObjectOf({ a: isOptional(isString) }, isRecordOf(isString)))({})
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartial(
       isObjectOf({ a: isOptionalUndefined(isString) }, isRecordOf(isString))
     )({})
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
       a: 'abc',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
       a: 'abc',
       b: 'def',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
       b: 'def',
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
       a: 'abc',
       b: undefined,
     })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
       a: undefined,
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
       a: undefined,
       b: undefined,
     })
-  ).toBeFalsy();
+  ).toBe(false);
 
-  expect(isPartial(isStrictObjectOf({ a: isString }))({})).toBeTruthy();
-  expect(
-    isPartial(isStrictObjectOf({ a: isOptional(isString) }))({})
-  ).toBeTruthy();
+  expect(isPartial(isStrictObjectOf({ a: isString }))({})).toBe(true);
+  expect(isPartial(isStrictObjectOf({ a: isOptional(isString) }))({})).toBe(
+    true
+  );
   expect(
     isPartial(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({})
-  ).toBeTruthy();
-  expect(
-    isPartial(isStrictObjectOf({ a: isString }))({ a: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
+  expect(isPartial(isStrictObjectOf({ a: isString }))({ a: 'abc' })).toBe(true);
   expect(
     isPartial(isStrictObjectOf({ a: isString }))({ a: 'abc', b: 'def' })
-  ).toBeFalsy();
-  expect(
-    isPartial(isStrictObjectOf({ a: isString }))({ b: 'def' })
-  ).toBeFalsy();
-  expect(
-    isPartial(isStrictObjectOf({ a: isString }))({ a: undefined })
-  ).toBeFalsy();
+  ).toBe(false);
+  expect(isPartial(isStrictObjectOf({ a: isString }))({ b: 'def' })).toBe(
+    false
+  );
+  expect(isPartial(isStrictObjectOf({ a: isString }))({ a: undefined })).toBe(
+    false
+  );
 
-  expect(isPartial(isTupleOf([isString]))([])).toBeTruthy();
-  expect(isPartial(isTupleOf([isOptional(isString)]))([])).toBeTruthy();
-  expect(
-    isPartial(isTupleOf([isOptionalUndefined(isString)]))([])
-  ).toBeTruthy();
-  expect(isPartial(isTupleOf([isString]))(['abc'])).toBeTruthy();
-  expect(isPartial(isTupleOf([isString]))([undefined])).toBeFalsy();
+  expect(isPartial(isTupleOf([isString]))([])).toBe(true);
+  expect(isPartial(isTupleOf([isOptional(isString)]))([])).toBe(true);
+  expect(isPartial(isTupleOf([isOptionalUndefined(isString)]))([])).toBe(true);
+  expect(isPartial(isTupleOf([isString]))(['abc'])).toBe(true);
+  expect(isPartial(isTupleOf([isString]))([undefined])).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -120,62 +116,58 @@ test('isPartial', () => {
 test('isPartialUndefined', () => {
   expect(isPartialUndefined).toEqual(partialUndef);
 
-  expect(isPartialUndefined(isObjectOf({ a: isString }))({})).toBeTruthy();
-  expect(
-    isPartialUndefined(isObjectOf({ a: isOptional(isString) }))({})
-  ).toBeTruthy();
+  expect(isPartialUndefined(isObjectOf({ a: isString }))({})).toBe(true);
+  expect(isPartialUndefined(isObjectOf({ a: isOptional(isString) }))({})).toBe(
+    true
+  );
   expect(
     isPartialUndefined(isObjectOf({ a: isOptionalUndefined(isString) }))({})
-  ).toBeTruthy();
-  expect(
-    isPartialUndefined(isObjectOf({ a: isString }))({ a: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
+  expect(isPartialUndefined(isObjectOf({ a: isString }))({ a: 'abc' })).toBe(
+    true
+  );
   expect(
     isPartialUndefined(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' })
-  ).toBeTruthy();
-  expect(
-    isPartialUndefined(isObjectOf({ a: isString }))({ b: 'def' })
-  ).toBeTruthy();
+  ).toBe(true);
+  expect(isPartialUndefined(isObjectOf({ a: isString }))({ b: 'def' })).toBe(
+    true
+  );
   expect(
     isPartialUndefined(isObjectOf({ a: isString }))({ a: undefined })
-  ).toBeTruthy();
+  ).toBe(true);
 
-  expect(
-    isPartialUndefined(isStrictObjectOf({ a: isString }))({})
-  ).toBeTruthy();
+  expect(isPartialUndefined(isStrictObjectOf({ a: isString }))({})).toBe(true);
   expect(
     isPartialUndefined(isStrictObjectOf({ a: isOptional(isString) }))({})
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartialUndefined(isStrictObjectOf({ a: isOptionalUndefined(isString) }))(
       {}
     )
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartialUndefined(isStrictObjectOf({ a: isString }))({ a: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartialUndefined(isStrictObjectOf({ a: isString }))({ a: undefined })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isPartialUndefined(isStrictObjectOf({ a: isString }))({
       a: 'abc',
       b: 'def',
     })
-  ).toBeFalsy();
+  ).toBe(false);
   expect(
     isPartialUndefined(isStrictObjectOf({ a: isString }))({ b: 'def' })
-  ).toBeFalsy();
+  ).toBe(false);
 
-  expect(isPartialUndefined(isTupleOf([isString]))([])).toBeTruthy();
-  expect(
-    isPartialUndefined(isTupleOf([isOptional(isString)]))([])
-  ).toBeTruthy();
+  expect(isPartialUndefined(isTupleOf([isString]))([])).toBe(true);
+  expect(isPartialUndefined(isTupleOf([isOptional(isString)]))([])).toBe(true);
   expect(
     isPartialUndefined(isTupleOf([isOptionalUndefined(isString)]))([])
-  ).toBeTruthy();
-  expect(isPartialUndefined(isTupleOf([isString]))(['abc'])).toBeTruthy();
-  expect(isPartialUndefined(isTupleOf([isString]))([undefined])).toBeTruthy();
+  ).toBe(true);
+  expect(isPartialUndefined(isTupleOf([isString]))(['abc'])).toBe(true);
+  expect(isPartialUndefined(isTupleOf([isString]))([undefined])).toBe(true);
 
   expect(() => {
     // @ts-expect-error - Expect throw

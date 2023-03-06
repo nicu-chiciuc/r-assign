@@ -4,7 +4,7 @@ test('isAny', () => {
   expect(isAny).toBe(any);
 
   // @ts-expect-error - Expects 1 argument
-  expect(isAny()).toBeTruthy();
+  expect(isAny()).toBe(true);
 
-  expect(isAny(null)).toBeTruthy();
+  expect(isAny(null)).toBe(true);
 });

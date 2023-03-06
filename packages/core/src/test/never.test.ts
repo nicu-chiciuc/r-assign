@@ -4,7 +4,7 @@ test('isNever', () => {
   expect(isNever).toEqual(never);
 
   // @ts-expect-error - Expects 1 argument
-  expect(isNever()).toBeFalsy();
+  expect(isNever()).toBe(false);
 
-  expect(isNever(null)).toBeFalsy();
+  expect(isNever(null)).toBe(false);
 });

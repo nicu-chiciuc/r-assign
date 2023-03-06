@@ -4,7 +4,7 @@ test('isString', () => {
   expect(isString).toEqual(string);
 
   // @ts-expect-error isString should receive a value
-  expect(isString()).toBeFalsy();
+  expect(isString()).toBe(false);
 
-  expect(isString('')).toBeTruthy();
+  expect(isString('')).toBe(true);
 });

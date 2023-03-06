@@ -19,37 +19,37 @@ test('isTupleOf', () => {
 
   expect(isTupleOf).toEqual(tuple);
 
-  expect(isEmptyTuple([])).toBeTruthy();
-  expect(isEmptyTuple([undefined])).toBeFalsy();
+  expect(isEmptyTuple([])).toBe(true);
+  expect(isEmptyTuple([undefined])).toBe(false);
 
   const isTupleOfS = isTupleOf([isString]);
 
-  expect(isTupleOfS(['abc'])).toBeTruthy();
-  expect(isTupleOfS([])).toBeFalsy();
+  expect(isTupleOfS(['abc'])).toBe(true);
+  expect(isTupleOfS([])).toBe(false);
 
   const isTupleOfO = isTupleOf([isOptional(isString)]);
 
-  expect(isTupleOfO(['abc'])).toBeTruthy();
-  expect(isTupleOfO([])).toBeTruthy();
-  expect(isTupleOfO([undefined])).toBeFalsy();
+  expect(isTupleOfO(['abc'])).toBe(true);
+  expect(isTupleOfO([])).toBe(true);
+  expect(isTupleOfO([undefined])).toBe(false);
 
   const isTupleOfU = isTupleOf([isOptionalUndefined(isString)]);
 
-  expect(isTupleOfU(['abc'])).toBeTruthy();
-  expect(isTupleOfU([])).toBeTruthy();
-  expect(isTupleOfU([undefined])).toBeTruthy();
-  expect(isTupleOfU([null])).toBeFalsy();
+  expect(isTupleOfU(['abc'])).toBe(true);
+  expect(isTupleOfU([])).toBe(true);
+  expect(isTupleOfU([undefined])).toBe(true);
+  expect(isTupleOfU([null])).toBe(false);
 
   const isTupleOfSSS = isTupleOf([isString, isString, isString]);
 
-  expect(isTupleOfSSS(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfSSS([])).toBeFalsy();
+  expect(isTupleOfSSS(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfSSS([])).toBe(false);
 
   const isTupleOfSSO = isTupleOf([isString, isString, isOptional(isString)]);
 
-  expect(isTupleOfSSO(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfSSO(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfSSO(['abc', 'def', undefined])).toBeFalsy();
+  expect(isTupleOfSSO(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfSSO(['abc', 'def'])).toBe(true);
+  expect(isTupleOfSSO(['abc', 'def', undefined])).toBe(false);
 
   const isTupleOfSSU = isTupleOf([
     isString,
@@ -57,10 +57,10 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfSSU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfSSU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfSSU(['abc', 'def', undefined])).toBeTruthy();
-  expect(isTupleOfSSU(['abc', 'def', null])).toBeFalsy();
+  expect(isTupleOfSSU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfSSU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfSSU(['abc', 'def', undefined])).toBe(true);
+  expect(isTupleOfSSU(['abc', 'def', null])).toBe(false);
 
   const isTupleOfSOO = isTupleOf([
     isString,
@@ -68,11 +68,11 @@ test('isTupleOf', () => {
     isOptional(isString),
   ]);
 
-  expect(isTupleOfSOO(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfSOO(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfSOO(['abc'])).toBeTruthy();
-  expect(isTupleOfSSO(['abc', 'def', undefined])).toBeFalsy();
-  expect(isTupleOfSOO(['abc', undefined, undefined])).toBeFalsy();
+  expect(isTupleOfSOO(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfSOO(['abc', 'def'])).toBe(true);
+  expect(isTupleOfSOO(['abc'])).toBe(true);
+  expect(isTupleOfSSO(['abc', 'def', undefined])).toBe(false);
+  expect(isTupleOfSOO(['abc', undefined, undefined])).toBe(false);
 
   const isTupleOfSOU = isTupleOf([
     isString,
@@ -80,11 +80,11 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfSOU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfSOU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfSOU(['abc', 'def', undefined])).toBeTruthy();
-  expect(isTupleOfSOU(['abc'])).toBeTruthy();
-  expect(isTupleOfSOU(['abc', undefined])).toBeFalsy();
+  expect(isTupleOfSOU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfSOU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfSOU(['abc', 'def', undefined])).toBe(true);
+  expect(isTupleOfSOU(['abc'])).toBe(true);
+  expect(isTupleOfSOU(['abc', undefined])).toBe(false);
 
   const isTupleOfSUU = isTupleOf([
     isString,
@@ -92,13 +92,13 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfSUU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfSUU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfSUU(['abc', 'def', undefined])).toBeTruthy();
-  expect(isTupleOfSUU(['abc', undefined, undefined])).toBeTruthy();
-  expect(isTupleOfSUU(['abc', undefined])).toBeTruthy();
-  expect(isTupleOfSUU(['abc'])).toBeTruthy();
-  expect(isTupleOfSUU(['abc', null, null])).toBeFalsy();
+  expect(isTupleOfSUU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfSUU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfSUU(['abc', 'def', undefined])).toBe(true);
+  expect(isTupleOfSUU(['abc', undefined, undefined])).toBe(true);
+  expect(isTupleOfSUU(['abc', undefined])).toBe(true);
+  expect(isTupleOfSUU(['abc'])).toBe(true);
+  expect(isTupleOfSUU(['abc', null, null])).toBe(false);
 
   const isTupleOfOOO = isTupleOf([
     isOptional(isString),
@@ -106,10 +106,10 @@ test('isTupleOf', () => {
     isOptional(isString),
   ]);
 
-  expect(isTupleOfOOO(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfOOO(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfOOO(['abc'])).toBeTruthy();
-  expect(isTupleOfOOO([])).toBeTruthy();
+  expect(isTupleOfOOO(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfOOO(['abc', 'def'])).toBe(true);
+  expect(isTupleOfOOO(['abc'])).toBe(true);
+  expect(isTupleOfOOO([])).toBe(true);
 
   const isTupleOfOOU = isTupleOf([
     isOptional(isString),
@@ -117,12 +117,12 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfOOU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfOOU(['abc', 'def', undefined])).toBeTruthy();
-  expect(isTupleOfOOU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfOOU(['abc'])).toBeTruthy();
-  expect(isTupleOfOOU([])).toBeTruthy();
-  expect(isTupleOfOOU(['abc', 'def', null])).toBeFalsy();
+  expect(isTupleOfOOU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfOOU(['abc', 'def', undefined])).toBe(true);
+  expect(isTupleOfOOU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfOOU(['abc'])).toBe(true);
+  expect(isTupleOfOOU([])).toBe(true);
+  expect(isTupleOfOOU(['abc', 'def', null])).toBe(false);
 
   const isTupleOfOUO = isTupleOf([
     isOptional(isString),
@@ -130,14 +130,14 @@ test('isTupleOf', () => {
     isOptional(isString),
   ]);
 
-  expect(isTupleOfOUO(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfOUO(['abc', undefined, 'def'])).toBeTruthy();
-  expect(isTupleOfOUO(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfOUO(['abc', undefined])).toBeTruthy();
-  expect(isTupleOfOUO(['abc'])).toBeTruthy();
-  expect(isTupleOfOUO([])).toBeTruthy();
-  expect(isTupleOfOUO(['abc', null, 'def'])).toBeFalsy();
-  expect(isTupleOfOUO(['abc', null])).toBeFalsy();
+  expect(isTupleOfOUO(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfOUO(['abc', undefined, 'def'])).toBe(true);
+  expect(isTupleOfOUO(['abc', 'def'])).toBe(true);
+  expect(isTupleOfOUO(['abc', undefined])).toBe(true);
+  expect(isTupleOfOUO(['abc'])).toBe(true);
+  expect(isTupleOfOUO([])).toBe(true);
+  expect(isTupleOfOUO(['abc', null, 'def'])).toBe(false);
+  expect(isTupleOfOUO(['abc', null])).toBe(false);
 
   const isTupleOfOUU = isTupleOf([
     isOptional(isString),
@@ -145,15 +145,15 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfOUU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfOUU(['abc', 'def', undefined])).toBeTruthy();
-  expect(isTupleOfOUU(['abc', undefined, undefined])).toBeTruthy();
-  expect(isTupleOfOUU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfOUU(['abc', undefined])).toBeTruthy();
-  expect(isTupleOfOUU(['abc'])).toBeTruthy();
-  expect(isTupleOfOUU([])).toBeTruthy();
-  expect(isTupleOfOUU(['abc', 'def', null])).toBeFalsy();
-  expect(isTupleOfOUU(['abc', null])).toBeFalsy();
+  expect(isTupleOfOUU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfOUU(['abc', 'def', undefined])).toBe(true);
+  expect(isTupleOfOUU(['abc', undefined, undefined])).toBe(true);
+  expect(isTupleOfOUU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfOUU(['abc', undefined])).toBe(true);
+  expect(isTupleOfOUU(['abc'])).toBe(true);
+  expect(isTupleOfOUU([])).toBe(true);
+  expect(isTupleOfOUU(['abc', 'def', null])).toBe(false);
+  expect(isTupleOfOUU(['abc', null])).toBe(false);
 
   const isTupleOfUOO = isTupleOf([
     isOptionalUndefined(isString),
@@ -161,16 +161,16 @@ test('isTupleOf', () => {
     isOptional(isString),
   ]);
 
-  expect(isTupleOfUOO(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfUOO([undefined, 'abc', 'def'])).toBeTruthy();
-  expect(isTupleOfUOO(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfUOO([undefined, 'abc'])).toBeTruthy();
-  expect(isTupleOfUOO(['abc'])).toBeTruthy();
-  expect(isTupleOfUOO([undefined])).toBeTruthy();
-  expect(isTupleOfUOO([])).toBeTruthy();
-  expect(isTupleOfUOO([null, 'abc', 'def'])).toBeFalsy();
-  expect(isTupleOfUOO([null, 'abc'])).toBeFalsy();
-  expect(isTupleOfUOO([null])).toBeFalsy();
+  expect(isTupleOfUOO(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfUOO([undefined, 'abc', 'def'])).toBe(true);
+  expect(isTupleOfUOO(['abc', 'def'])).toBe(true);
+  expect(isTupleOfUOO([undefined, 'abc'])).toBe(true);
+  expect(isTupleOfUOO(['abc'])).toBe(true);
+  expect(isTupleOfUOO([undefined])).toBe(true);
+  expect(isTupleOfUOO([])).toBe(true);
+  expect(isTupleOfUOO([null, 'abc', 'def'])).toBe(false);
+  expect(isTupleOfUOO([null, 'abc'])).toBe(false);
+  expect(isTupleOfUOO([null])).toBe(false);
 
   const isTupleOfUOU = isTupleOf([
     isOptionalUndefined(isString),
@@ -178,18 +178,18 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfUOU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfUOU([undefined, 'abc', 'def'])).toBeTruthy();
-  expect(isTupleOfUOU([undefined, 'abc', undefined])).toBeTruthy();
-  expect(isTupleOfUOU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfUOU([undefined, 'abc'])).toBeTruthy();
-  expect(isTupleOfUOU(['abc'])).toBeTruthy();
-  expect(isTupleOfUOU([undefined])).toBeTruthy();
-  expect(isTupleOfUOU([])).toBeTruthy();
-  expect(isTupleOfUOU([null, 'abc', 'def'])).toBeFalsy();
-  expect(isTupleOfUOU([null, 'abc', null])).toBeFalsy();
-  expect(isTupleOfUOU([null, 'abc'])).toBeFalsy();
-  expect(isTupleOfUOU([null])).toBeFalsy();
+  expect(isTupleOfUOU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfUOU([undefined, 'abc', 'def'])).toBe(true);
+  expect(isTupleOfUOU([undefined, 'abc', undefined])).toBe(true);
+  expect(isTupleOfUOU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfUOU([undefined, 'abc'])).toBe(true);
+  expect(isTupleOfUOU(['abc'])).toBe(true);
+  expect(isTupleOfUOU([undefined])).toBe(true);
+  expect(isTupleOfUOU([])).toBe(true);
+  expect(isTupleOfUOU([null, 'abc', 'def'])).toBe(false);
+  expect(isTupleOfUOU([null, 'abc', null])).toBe(false);
+  expect(isTupleOfUOU([null, 'abc'])).toBe(false);
+  expect(isTupleOfUOU([null])).toBe(false);
 
   const isTupleOfUUU = isTupleOf([
     isOptionalUndefined(isString),
@@ -197,30 +197,30 @@ test('isTupleOf', () => {
     isOptionalUndefined(isString),
   ]);
 
-  expect(isTupleOfUUU(['abc', 'def', 'ghi'])).toBeTruthy();
-  expect(isTupleOfUUU(['abc', 'def', undefined])).toBeTruthy();
-  expect(isTupleOfUUU(['abc', undefined, 'def'])).toBeTruthy();
-  expect(isTupleOfUUU(['abc', undefined, undefined])).toBeTruthy();
-  expect(isTupleOfUUU([undefined, 'abc', 'def'])).toBeTruthy();
-  expect(isTupleOfUUU([undefined, 'abc', undefined])).toBeTruthy();
-  expect(isTupleOfUUU([undefined, undefined, undefined])).toBeTruthy();
-  expect(isTupleOfUUU(['abc', 'def'])).toBeTruthy();
-  expect(isTupleOfUUU(['abc', undefined])).toBeTruthy();
-  expect(isTupleOfUUU([undefined, 'abc'])).toBeTruthy();
-  expect(isTupleOfUUU([undefined, undefined])).toBeTruthy();
-  expect(isTupleOfUUU(['abc'])).toBeTruthy();
-  expect(isTupleOfUUU([undefined])).toBeTruthy();
-  expect(isTupleOfUUU([])).toBeTruthy();
-  expect(isTupleOfUUU(['abc', 'def', null])).toBeFalsy();
-  expect(isTupleOfUUU(['abc', null, 'def'])).toBeFalsy();
-  expect(isTupleOfUUU(['abc', null, null])).toBeFalsy();
-  expect(isTupleOfUUU([null, 'abc', 'def'])).toBeFalsy();
-  expect(isTupleOfUUU([null, 'abc', null])).toBeFalsy();
-  expect(isTupleOfUUU([null, null, null])).toBeFalsy();
-  expect(isTupleOfUUU(['abc', null])).toBeFalsy();
-  expect(isTupleOfUUU([null, 'abc'])).toBeFalsy();
-  expect(isTupleOfUUU([null, null])).toBeFalsy();
-  expect(isTupleOfUUU([null])).toBeFalsy();
+  expect(isTupleOfUUU(['abc', 'def', 'ghi'])).toBe(true);
+  expect(isTupleOfUUU(['abc', 'def', undefined])).toBe(true);
+  expect(isTupleOfUUU(['abc', undefined, 'def'])).toBe(true);
+  expect(isTupleOfUUU(['abc', undefined, undefined])).toBe(true);
+  expect(isTupleOfUUU([undefined, 'abc', 'def'])).toBe(true);
+  expect(isTupleOfUUU([undefined, 'abc', undefined])).toBe(true);
+  expect(isTupleOfUUU([undefined, undefined, undefined])).toBe(true);
+  expect(isTupleOfUUU(['abc', 'def'])).toBe(true);
+  expect(isTupleOfUUU(['abc', undefined])).toBe(true);
+  expect(isTupleOfUUU([undefined, 'abc'])).toBe(true);
+  expect(isTupleOfUUU([undefined, undefined])).toBe(true);
+  expect(isTupleOfUUU(['abc'])).toBe(true);
+  expect(isTupleOfUUU([undefined])).toBe(true);
+  expect(isTupleOfUUU([])).toBe(true);
+  expect(isTupleOfUUU(['abc', 'def', null])).toBe(false);
+  expect(isTupleOfUUU(['abc', null, 'def'])).toBe(false);
+  expect(isTupleOfUUU(['abc', null, null])).toBe(false);
+  expect(isTupleOfUUU([null, 'abc', 'def'])).toBe(false);
+  expect(isTupleOfUUU([null, 'abc', null])).toBe(false);
+  expect(isTupleOfUUU([null, null, null])).toBe(false);
+  expect(isTupleOfUUU(['abc', null])).toBe(false);
+  expect(isTupleOfUUU([null, 'abc'])).toBe(false);
+  expect(isTupleOfUUU([null, null])).toBe(false);
+  expect(isTupleOfUUU([null])).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -264,40 +264,40 @@ test('isTupleOf', () => {
 test('isTupleRestOf', () => {
   expect(isTupleRestOf).toEqual(tupleRest);
 
-  expect(isTupleOf([isTupleRestOf(isString)])([])).toBeTruthy();
+  expect(isTupleOf([isTupleRestOf(isString)])([])).toBe(true);
 
-  expect(isTupleOf([isBoolean, isTupleRestOf(isString)])([true])).toBeTruthy();
-  expect(
-    isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 'abc'])
-  ).toBeTruthy();
+  expect(isTupleOf([isBoolean, isTupleRestOf(isString)])([true])).toBe(true);
+  expect(isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 'abc'])).toBe(
+    true
+  );
   expect(
     isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 'abc', 'def'])
-  ).toBeTruthy();
-  expect(
-    isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 0])
-  ).toBeFalsy();
+  ).toBe(true);
+  expect(isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 0])).toBe(
+    false
+  );
 
-  expect(isTupleOf([isTupleRestOf(isString), isBoolean])([true])).toBeTruthy();
-  expect(
-    isTupleOf([isTupleRestOf(isString), isBoolean])(['abc', true])
-  ).toBeTruthy();
+  expect(isTupleOf([isTupleRestOf(isString), isBoolean])([true])).toBe(true);
+  expect(isTupleOf([isTupleRestOf(isString), isBoolean])(['abc', true])).toBe(
+    true
+  );
   expect(
     isTupleOf([isTupleRestOf(isString), isBoolean])(['abc', 'def', true])
-  ).toBeTruthy();
-  expect(
-    isTupleOf([isTupleRestOf(isString), isBoolean])([0, true])
-  ).toBeFalsy();
+  ).toBe(true);
+  expect(isTupleOf([isTupleRestOf(isString), isBoolean])([0, true])).toBe(
+    false
+  );
 
   expect(
     isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([true, false])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([
       'abc',
       true,
       false,
     ])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([
       'abc',
@@ -305,65 +305,65 @@ test('isTupleRestOf', () => {
       true,
       false,
     ])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([0, true, false])
-  ).toBeFalsy();
+  ).toBe(false);
 
-  expect(
-    isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([])
-  ).toBeTruthy();
+  expect(isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([])).toBe(
+    true
+  );
   expect(
     isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([true])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([true, 'abc'])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([
       true,
       'abc',
       'def',
     ])
-  ).toBeTruthy();
+  ).toBe(true);
 
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
       undefined,
     ])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([true])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
       true,
       'abc',
     ])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
       undefined,
       'abc',
     ])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
       true,
       'abc',
       'def',
     ])
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
       undefined,
       'abc',
       'def',
     ])
-  ).toBeTruthy();
+  ).toBe(true);
 
   expect(() => {
     // @ts-expect-error - Expect throw

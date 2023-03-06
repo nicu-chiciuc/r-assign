@@ -3,7 +3,7 @@ import { boolean, isBoolean } from '../lib/boolean';
 test('isBoolean', () => {
   expect(isBoolean).toBe(boolean);
 
-  expect(isBoolean()).toBeFalsy();
-  expect(isBoolean(false)).toBeTruthy();
-  expect(isBoolean(true)).toBeTruthy();
+  expect(isBoolean()).toBe(false);
+  expect(isBoolean(false)).toBe(true);
+  expect(isBoolean(true)).toBe(true);
 });

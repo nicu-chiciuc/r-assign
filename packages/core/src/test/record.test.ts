@@ -16,24 +16,24 @@ import {
 test('isRecordOf', () => {
   expect(isRecordOf).toEqual(record);
 
-  expect(isRecordOf(isString)({})).toBeTruthy();
-  expect(isRecordOf(isString)({ abc: 'def' })).toBeTruthy();
-  expect(isRecordOf(isSymbol, isString)({ [Symbol()]: 'abc' })).toBeTruthy();
-  expect(isRecordOf(isNumber, isString)({ 1: 'abc' })).toBeTruthy();
-  expect(isRecordOf(isLiteral('abc'), isString)({ abc: 'def' })).toBeTruthy();
-  expect(isRecordOf(isLiteral(1), isString)({ 1: 'abc' })).toBeTruthy();
+  expect(isRecordOf(isString)({})).toBe(true);
+  expect(isRecordOf(isString)({ abc: 'def' })).toBe(true);
+  expect(isRecordOf(isSymbol, isString)({ [Symbol()]: 'abc' })).toBe(true);
+  expect(isRecordOf(isNumber, isString)({ 1: 'abc' })).toBe(true);
+  expect(isRecordOf(isLiteral('abc'), isString)({ abc: 'def' })).toBe(true);
+  expect(isRecordOf(isLiteral(1), isString)({ 1: 'abc' })).toBe(true);
   expect(
     isRecordOf(isLiteralOf(['abc', 1]), isString)({ 1: 'a', abc: 'def' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(isTemplateLiteralOf(['a', isNumber]), isString)({ a0: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(
       isTemplateLiteralOf([isLiteralOf(['a', 'b']), isNumber]),
       isString
     )({ b0: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(
       isTemplateLiteralOf([
@@ -42,7 +42,7 @@ test('isRecordOf', () => {
       ]),
       isString
     )({ b00: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(
       isTemplateLiteralOf([
@@ -51,33 +51,33 @@ test('isRecordOf', () => {
       ]),
       isString
     )({ b0: 'abc' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(isUnionOf([isNumber, isString]), isString)({ abc: 'def' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(
       isUnionOf([isLiteral('a'), isLiteral('b')]),
       isString
     )({ a: 'a', b: 'b' })
-  ).toBeTruthy();
+  ).toBe(true);
   expect(
     isRecordOf(
       isUnionOf([isLiteral('a'), isLiteralOf(['b', 'c']), isString]),
       isString
     )({ a: 'a', b: 'b', c: 'c' })
-  ).toBeTruthy();
+  ).toBe(true);
 
-  expect(isRecordOf(isString)({ abc: 1 })).toBeFalsy();
-  expect(isRecordOf(isString)({ [Symbol()]: 1 })).toBeFalsy();
-  expect(isRecordOf(isString)(null)).toBeFalsy();
-  expect(isRecordOf(isNumber, isString)({ a: 'abc' })).toBeFalsy();
-  expect(
-    isRecordOf(isUnionOf([isLiteral(1), isString]), isString)({})
-  ).toBeFalsy();
+  expect(isRecordOf(isString)({ abc: 1 })).toBe(false);
+  expect(isRecordOf(isString)({ [Symbol()]: 1 })).toBe(false);
+  expect(isRecordOf(isString)(null)).toBe(false);
+  expect(isRecordOf(isNumber, isString)({ a: 'abc' })).toBe(false);
+  expect(isRecordOf(isUnionOf([isLiteral(1), isString]), isString)({})).toBe(
+    false
+  );
   expect(
     isRecordOf(isUnionOf([isLiteral(1), isString, isSymbol]), isString)({})
-  ).toBeFalsy();
+  ).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw

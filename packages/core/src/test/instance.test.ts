@@ -7,8 +7,8 @@ test('isInstanceOf', () => {
 
   expect(isInstanceOf).toEqual(instance);
 
-  expect(isDate(currentDate)).toBeTruthy();
-  expect(isDate(null)).toBeFalsy();
+  expect(isDate(currentDate)).toBe(true);
+  expect(isDate(null)).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw

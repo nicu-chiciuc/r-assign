@@ -10,13 +10,13 @@ const receivedStringFalse = 'but received "false"';
 test('isLiteral', () => {
   expect(isLiteral).toEqual(literal);
 
-  expect(isLiteral(null)(null)).toBeTruthy();
-  expect(isLiteral(0n)(0n)).toBeTruthy();
-  expect(isLiteral(false)(false)).toBeTruthy();
-  expect(isLiteral(0)(0)).toBeTruthy();
-  expect(isLiteral('')('')).toBeTruthy();
+  expect(isLiteral(null)(null)).toBe(true);
+  expect(isLiteral(0n)(0n)).toBe(true);
+  expect(isLiteral(false)(false)).toBe(true);
+  expect(isLiteral(0)(0)).toBe(true);
+  expect(isLiteral('')('')).toBe(true);
   // @ts-expect-error - Expect 1 argument
-  expect(isLiteral(0)()).toBeFalsy();
+  expect(isLiteral(0)()).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
@@ -36,9 +36,9 @@ test('isLiteral', () => {
 test('isLiteralOf', () => {
   expect(isLiteralOf).toEqual(literals);
 
-  expect(isLiteralOf(['a'])('a')).toBeTruthy();
-  expect(isLiteralOf(['a', 'b'])('a')).toBeTruthy();
-  expect(isLiteralOf(['a', 'b'])(0)).toBeFalsy();
+  expect(isLiteralOf(['a'])('a')).toBe(true);
+  expect(isLiteralOf(['a', 'b'])('a')).toBe(true);
+  expect(isLiteralOf(['a', 'b'])(0)).toBe(false);
 
   expect(() => {
     // @ts-expect-error - Expect throw
