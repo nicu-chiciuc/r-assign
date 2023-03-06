@@ -1,6 +1,4 @@
 import {
-  getObjectOf,
-  getStrictObjectOf,
   isKeyOf,
   isObjectOf,
   isOmitFrom,
@@ -13,75 +11,15 @@ import {
   keyof,
   object,
   omit,
-  parseObjectOf,
-  parseStrictObjectOf,
   parseType,
   pick,
   strictObject,
 } from '../lib';
 
-const { assign, create } = Object;
-
-const circularRefShape = '{\n "obj": <Circular Reference>;\n}';
-const objectShape = '{\n "abc": string;\n}';
-const optionalObjectShape = '{\n "abc"?: string;\n}';
-const expected = `expected an object of shape ${objectShape}`;
 const expectedKeys = 'expected strings or array of strings';
-const expectedStrict = `expected an object of strict shape ${objectShape}`;
-const expectedOptional = `expected an object of shape ${optionalObjectShape}`;
-const invalidDefaultValue = 'Invalid default value type';
 const invalidKeysType = `Invalid keys provided, ${expectedKeys}`;
 const invalidMapping = 'Invalid object mapping provided';
 const invalidShape = 'Invalid shape provided';
-const invalidValue = 'Invalid value type';
-const received = 'but received null';
-const receivedEmptyObject = 'but received a value of type {}';
-const receivedObject = 'but received a value of type {\n "abc": number;\n}';
-const receivedCircularRef = `but received a value of type ${circularRefShape}`;
-
-test('getObjectOf', () => {
-  const getObjectABC = getObjectOf({ abc: isString }, { abc: '' });
-
-  expect(getObjectABC()).toEqual({ abc: '' });
-  expect(getObjectABC({ abc: '' })).toEqual({ abc: '' });
-  expect(getObjectABC({ abc: 'abc' })).toEqual({ abc: 'abc' });
-  expect(
-    getObjectABC({
-      abc: 'abc',
-      def: 'def',
-    })
-  ).toEqual({
-    abc: 'abc',
-  });
-
-  expect(() => {
-    // @ts-expect-error - Expect throw
-    getObjectOf({ abc: isString }, null);
-  }).toThrow(TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
-
-  expect(() => {
-    // @ts-expect-error - Expect throw
-    getObjectOf({ abc: isOptional(isString) }, null);
-  }).toThrow(
-    TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`)
-  );
-});
-
-test('getStrictObjectOf', () => {
-  const getObjectABC = getStrictObjectOf({ abc: isString }, { abc: '' });
-
-  expect(getObjectABC()).toEqual({ abc: '' });
-  expect(getObjectABC({ abc: '' })).toEqual({ abc: '' });
-  expect(getObjectABC({ abc: 'abc' })).toEqual({ abc: 'abc' });
-  expect(getObjectABC({ abc: 'abc', def: 'def' })).toEqual({ abc: '' });
-
-  expect(() => {
-    // @ts-expect-error - Expect throw
-    getStrictObjectOf({ abc: isString }, null);
-  }).toThrow(
-    TypeError(`${invalidDefaultValue}, ${expectedStrict} ${received}`)
-  );
-});
 
 test('isKeyOf', () => {
   expect(isKeyOf).toEqual(keyof);
@@ -353,56 +291,4 @@ test('isStrictObjectOf', () => {
     // @ts-expect-error - Expect throw
     isStrictObjectOf();
   }).toThrow(TypeError(invalidShape));
-});
-
-test('parseObjectOf', () => {
-  const parseObjectABC = parseObjectOf({ abc: isString });
-
-  expect(parseObjectABC({ abc: '' })).toEqual({ abc: '' });
-  expect(parseObjectABC({ abc: '', def: null })).toEqual({ abc: '' });
-
-  const obj: Record<string, unknown> = {};
-
-  obj['obj'] = obj;
-
-  expect(() => {
-    parseObjectABC(null);
-  }).toThrow(TypeError(`${invalidValue}, ${expected} ${received}`));
-
-  expect(() => {
-    parseObjectABC({});
-  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedEmptyObject}`));
-
-  expect(() => {
-    parseObjectABC({
-      abc: 0,
-    });
-  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedObject}`));
-
-  expect(() => {
-    parseObjectABC(obj);
-  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedCircularRef}`));
-
-  const parseObjectABCWithPrototype = parseObjectOf(
-    assign(
-      create({
-        def: null,
-      }),
-      {
-        abc: isString,
-      }
-    )
-  );
-
-  expect(parseObjectABCWithPrototype({ abc: '' })).toEqual({ abc: '' });
-});
-
-test('parseStrictObjectOf', () => {
-  const parseObjectABC = parseStrictObjectOf({ abc: isString });
-
-  expect(parseObjectABC({ abc: '' })).toEqual({ abc: '' });
-
-  expect(() => {
-    parseObjectABC(null);
-  }).toThrow(TypeError(`${invalidValue}, ${expectedStrict} ${received}`));
 });

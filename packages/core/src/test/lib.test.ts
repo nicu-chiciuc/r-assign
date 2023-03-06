@@ -1,7 +1,5 @@
 import * as lib from '../lib';
 
-const libKeys = Object.keys(lib);
-
 const methods = [
   'any',
   'anyDate',
@@ -9,34 +7,13 @@ const methods = [
   'array',
   'asAnyDate',
   'asDate',
-  'asString',
   'assertType',
   'bigint',
   'boolean',
   'convertToAnyDate',
   'convertToDate',
-  'convertToString',
   'date',
   'func',
-  'getAny',
-  'getAnyNumber',
-  'getArrayOf',
-  'getBigInt',
-  'getBoolean',
-  'getInstanceOf',
-  'getIntersectionOf',
-  'getLiteral',
-  'getLiteralOf',
-  'getNull',
-  'getNullable',
-  'getNumber',
-  'getObjectOf',
-  'getStrictObjectOf',
-  'getString',
-  'getSymbol',
-  'getTupleOf',
-  'getType',
-  'getUnionOf',
   'instance',
   'intersection',
   'isAny',
@@ -86,25 +63,6 @@ const methods = [
   'optional',
   'optionalUndef',
   'omit',
-  'parseAny',
-  'parseAnyNumber',
-  'parseArrayOf',
-  'parseBigInt',
-  'parseBoolean',
-  'parseInstanceOf',
-  'parseIntersectionOf',
-  'parseLiteral',
-  'parseLiteralOf',
-  'parseNull',
-  'parseNullable',
-  'parseNumber',
-  'parseObjectOf',
-  'parseStrictObjectOf',
-  'parseString',
-  'parseSymbol',
-  'parseTupleOf',
-  'parseType',
-  'parseUnionOf',
   'partial',
   'partialUndef',
   'pick',
@@ -120,14 +78,17 @@ const methods = [
   'tupleRest',
   'undef',
   'union',
+
+  'parseType',
+  'getType',
 ];
 
 test('rAssign lib exports', () => {
-  methods.forEach((method) => {
-    expect(method in lib).toBe(true);
-  });
+  // Check that all methods are exported
+  const compFunc = (a: string, b: string) => a.localeCompare(b);
 
-  libKeys.forEach((key) => {
-    expect(methods.includes(key)).toBe(true);
-  });
+  const libKeys = Object.keys(lib).sort(compFunc);
+  const sortedMethods = [...methods].sort(compFunc);
+
+  expect(libKeys).toEqual(sortedMethods);
 });

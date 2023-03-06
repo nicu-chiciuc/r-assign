@@ -113,9 +113,11 @@ test('isTemplateLiteralOf', () => {
     isTemplateLiteralOf([isUnionOf([isString, isNumber])])('0')
   ).toBeTruthy();
 
+  // @ts-expect-error - Expect 1 argument
   expect(isTemplateLiteralOf([])()).toBeFalsy();
   expect(isTemplateLiteralOf([])(' ')).toBeFalsy();
   expect(isTemplateLiteralOf(['abc'])('')).toBeFalsy();
+  // @ts-expect-error - Expect 1 argument
   expect(isTemplateLiteralOf([isBoolean])()).toBeFalsy();
   expect(isTemplateLiteralOf([isBoolean])('')).toBeFalsy();
 

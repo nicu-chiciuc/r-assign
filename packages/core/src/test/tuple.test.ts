@@ -1,35 +1,18 @@
 import {
-  getTupleOf,
   isBoolean,
   isOptional,
   isOptionalUndefined,
   isString,
   isTupleOf,
   isTupleRestOf,
-  parseTupleOf,
   tuple,
   tupleRest,
 } from '../lib';
 
-const invalidDefaultValue = 'Invalid default value type';
 const invalidValue = 'Invalid value type';
 const expected = 'expected a tuple of [ string ]';
 const received = 'but received a tuple of [ number ]';
 const receivedEmpty = 'but received an empty tuple []';
-
-test('getTupleOf', () => {
-  const getTupleOfString = getTupleOf([isString], ['abc']);
-
-  expect(getTupleOfString(['abc'])).toEqual(['abc']);
-  expect(getTupleOfString([])).toEqual(['abc']);
-
-  expect(() => {
-    // @ts-expect-error - Expect throw
-    getTupleOf([isString]);
-  }).toThrow(
-    TypeError(`${invalidDefaultValue}, ${expected} but received undefined`)
-  );
-});
 
 test('isTupleOf', () => {
   const isEmptyTuple = isTupleOf([]);
@@ -398,18 +381,4 @@ test('isTupleRestOf', () => {
   expect(() => {
     isTupleOf([isTupleRestOf(isString), isTupleRestOf(isString)]);
   }).toThrow(TypeError('A rest element cannot follow another rest element'));
-});
-
-test('parseTupleOf', () => {
-  const parseTupleOfString = parseTupleOf([isString]);
-
-  expect(parseTupleOfString(['abc'])).toEqual(['abc']);
-
-  expect(() => {
-    parseTupleOfString([]);
-  }).toThrow(TypeError(`${invalidValue}, ${expected} ${receivedEmpty}`));
-
-  expect(() => {
-    parseTupleOfString([0]);
-  }).toThrow(TypeError(`${invalidValue}, ${expected} ${received}`));
 });

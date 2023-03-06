@@ -12,6 +12,7 @@ test('isOptional', () => {
   expect(isOptional).toEqual(optional);
 
   expect(isOptionalString('')).toBeTruthy();
+  // @ts-expect-error - Expect 1 argument
   expect(isOptionalString()).toBeFalsy();
   expect(isOptionalString(null)).toBeFalsy();
 
@@ -31,6 +32,7 @@ test('isOptionalUndefined', () => {
 
   expect(isOptionalUndefined).toEqual(optionalUndef);
 
+  // @ts-expect-error - Expect 1 argument
   expect(isOptionalString()).toBeTruthy();
   expect(isOptionalString('')).toBeTruthy();
   expect(isOptionalString(null)).toBeFalsy();

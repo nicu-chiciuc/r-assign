@@ -1,7 +1,5 @@
 import { InferIntersection, Intersection, TypeGuard } from '.';
-import { TransformFunction } from '.';
 import { isAny } from './any';
-import { getType } from './get-type';
 import { hasTwoElements, hasAtLeastTwoElements } from './internal/array-checks';
 import { invalidOptionalType } from './internal/invalid-type';
 import {
@@ -9,7 +7,6 @@ import {
   isAnyTypeGuard,
   setTypeGuardMeta,
 } from './internal/type-guard-meta';
-import { parseType } from './parse-type';
 
 const impossibleIntersection = 'Provided intersection is impossible';
 const invalidTypeGuards = 'Invalid type guards provided';
