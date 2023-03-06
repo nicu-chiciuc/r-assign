@@ -20,7 +20,7 @@ type TypeGuard<T = any> = (value: unknown) => value is T;
 type CompositeTypeGuard<T> = T extends never ? never : TypeGuard<T>;
 
 type AnyTag = { any: true };
-type AnyTypeGuard = TypeGuard & AnyTag;
+type AnyTypeGuard = TypeGuard<any> & AnyTag;
 
 type OptionalTag = { optional: true };
 type OptionalTypeGuard<T = unknown> = TypeGuard<T | undefined> & OptionalTag;
@@ -28,34 +28,36 @@ type OptionalTypeGuard<T = unknown> = TypeGuard<T | undefined> & OptionalTag;
 export type RestTag = { rest: true };
 type RestTypeGuard<T = unknown> = TypeGuard<T[]> & RestTag;
 
-type BaseTypeGuard<T extends TypeGuard> = T extends OptionalTypeGuard
+type BaseTypeGuard<T extends TypeGuard<unknown>> = T extends OptionalTypeGuard
   ? never
   : T extends RestTypeGuard
   ? never
   : T;
 
-type InferTypeGuard<G extends TypeGuard> = G extends OptionalTypeGuard<infer T>
+type InferTypeGuard<G extends TypeGuard<unknown>> = G extends OptionalTypeGuard<
+  infer T
+>
   ? T
   : G extends TypeGuard<infer T>
   ? T
   : never;
 
-type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
+type Intersection = [TypeGuard<any>, TypeGuard<any>, ...TypeGuard<any>[]];
 
 type RemapObject<T> = T extends unknown[] ? T : { [K in keyof T]: T[K] };
 
 type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
-  ? F extends TypeGuard
-    ? S extends TypeGuard
+  ? F extends TypeGuard<unknown>
+    ? S extends TypeGuard<unknown>
       ? InferTypeGuard<F> & InferTypeGuard<S> extends infer I
         ? RemapObject<I>
         : never
       : never
     : never
   : T extends [infer F, infer S, ...infer R]
-  ? F extends TypeGuard
-    ? S extends TypeGuard
-      ? R extends TypeGuard[]
+  ? F extends TypeGuard<unknown>
+    ? S extends TypeGuard<unknown>
+      ? R extends TypeGuard<unknown>[]
         ? [
             TypeGuard<InferTypeGuard<F> & InferTypeGuard<S>>,
             ...R
@@ -95,7 +97,7 @@ type InferTemplateLiteral<T extends TemplateLiteral> = T extends []
     : never
   : never;
 
-type Tuple = TypeGuard[] | [];
+type Tuple = TypeGuard<any>[] | [];
 
 type InferTupleWithRest<T extends Tuple> = T extends []
   ? []
@@ -104,7 +106,7 @@ type InferTupleWithRest<T extends Tuple> = T extends []
     ? never
     : G extends RestTypeGuard
     ? never
-    : G extends TypeGuard
+    : G extends TypeGuard<unknown>
     ? [InferTypeGuard<G>]
     : never
   : T extends [infer H, ...infer R]
@@ -112,7 +114,7 @@ type InferTupleWithRest<T extends Tuple> = T extends []
     ? never
     : H extends RestTypeGuard
     ? never
-    : H extends TypeGuard
+    : H extends TypeGuard<unknown>
     ? R extends Tuple
       ? [InferTypeGuard<H>, ...InferTupleWithRest<R>]
       : never
@@ -152,7 +154,7 @@ type InferTuple<T extends Tuple> = T extends []
     ? [InferTypeGuard<G>?]
     : G extends RestTypeGuard
     ? InferTypeGuard<G>
-    : G extends TypeGuard
+    : G extends TypeGuard<unknown>
     ? [InferTypeGuard<G>]
     : never
   : T extends [infer H, ...infer R]
@@ -164,18 +166,18 @@ type InferTuple<T extends Tuple> = T extends []
     ? R extends Tuple
       ? [...InferTypeGuard<H>, ...InferTupleWithRest<R>]
       : never
-    : H extends TypeGuard
+    : H extends TypeGuard<unknown>
     ? R extends Tuple
       ? [InferTypeGuard<H>, ...InferTuple<R>]
       : never
     : never
   : never;
 
-type InferFunction<T extends Tuple, R extends TypeGuard> = (
+type InferFunction<T extends Tuple, R extends TypeGuard<unknown>> = (
   ...args: InferTuple<T>
 ) => InferTypeGuard<R>;
 
-type Shape = Record<string, TypeGuard>;
+type Shape = Record<string, TypeGuard<any>>;
 
 type KeysOfType<T, U> = {
   [K in keyof T]: T[K] extends U ? K : never;
@@ -194,12 +196,12 @@ type InferShape<
   OptionalShape<S, KeysOfType<S, OptionalTypeGuard>> &
     (M extends undefined
       ? unknown
-      : M extends TypeGuard
+      : M extends TypeGuard<unknown>
       ? InferTypeGuard<M>
       : never)
 >;
 
-type Union = [TypeGuard, TypeGuard, ...TypeGuard[]];
+type Union = [TypeGuard<any>, TypeGuard<any>, ...TypeGuard<any>[]];
 
 type InferUnion<T extends Union> = T extends TypeGuard<infer U>[] ? U : never;
 
