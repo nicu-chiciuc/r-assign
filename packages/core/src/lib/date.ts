@@ -1,5 +1,3 @@
-import { TransformFunction } from '.';
-import { invalidDate } from './internal/errors';
 import { setTypeGuardMeta } from './internal/type-guard-meta';
 
 const { isNaN } = Number;
@@ -20,24 +18,6 @@ setTypeGuardMeta(isAnyDate, {
 });
 
 /**
- * Transform number or string values to date
- * @deprecated will be removed in version 2.0
- */
-const convertToAnyDate: TransformFunction<Date> = (value) => {
-  // Check for string or number values
-  if (typeof value === 'string' || typeof value === 'number') {
-    return new Date(value);
-  }
-
-  // Check for date values
-  if (isAnyDate(value)) {
-    return value;
-  }
-
-  throw TypeError(invalidDate);
-};
-
-/**
  * Check for valid date values
  */
 const isDate = (value: unknown): value is Date =>
@@ -52,38 +32,4 @@ setTypeGuardMeta(isDate, {
   description: 'an instance of valid Date',
 });
 
-/**
- * Transform number or string values to valid date
- * @deprecated will be removed in version 2.0, use `asDate()` instead
- */
-const convertToDate = (value?: unknown): Date => {
-  // Check for string or number values
-  if (typeof value === 'string' || typeof value === 'number') {
-    const date = new Date(value);
-
-    // Check for valid date values
-    if (isDate(date)) {
-      return date;
-    }
-
-    throw TypeError(invalidDate);
-  }
-
-  // Check for date values
-  if (isDate(value)) {
-    return value;
-  }
-
-  throw TypeError(invalidDate);
-};
-
-export {
-  isAnyDate as anyDate,
-  convertToAnyDate as asAnyDate,
-  convertToDate as asDate,
-  convertToAnyDate,
-  convertToDate,
-  isDate as date,
-  isAnyDate,
-  isDate,
-};
+export { isAnyDate as anyDate, isDate as date, isAnyDate, isDate };
